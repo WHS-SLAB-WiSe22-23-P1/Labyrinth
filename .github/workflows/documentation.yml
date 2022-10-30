@@ -1,11 +1,10 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy LaTeX documentation to Pages
 
 on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -33,13 +32,12 @@ jobs:
       - name: Github Action for LaTeX
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: documentation/**/*.(tex|ltx)
+          root_file: documentation/**.{tex,ltx}
           glob_root_file: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
-          path: 'documentation/**/*.pdf'
+          path: 'documentation/**.pdf'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
