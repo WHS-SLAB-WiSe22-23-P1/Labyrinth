@@ -1,13 +1,16 @@
 package de.whs.slab.wise2223.project.labyrinth.model;
 
+import com.sun.istack.internal.NotNull;
+import org.json.simple.JSONObject;
+
 public interface Level {
-    int getWidth();
-    int getHeight();
+    @NotNull int getWidth();
+    @NotNull int getHeight();
 
     Coordinate getStart();
     Coordinate getEnd();
 
-    byte getFieldAt(Coordinate coordinate) throws IllegalArgumentException;
+    boolean getFieldAt(Coordinate coordinate) throws IllegalArgumentException;
 
-    String toJSONString();
+    JSONObject toJSON();
 }
