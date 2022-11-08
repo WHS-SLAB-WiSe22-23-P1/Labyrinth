@@ -1,6 +1,6 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.topdown;
 
-import de.whs.slab.wise2223.project.labyrinth.model.Maze2D;
+import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import processing.core.PApplet;
 import processing.core.PFont;
 
