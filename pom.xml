@@ -19,6 +19,15 @@
                 <role>Student</role>
             </roles>
         </developer>
+        <developer>
+            <name>Ulrich Steffen</name>
+            <email>Ulrich.Steffen@studmail.w-hs.de</email>
+            <organization>Westfälische Hochschule</organization>
+            <organizationUrl>https://www.w-hs.de/</organizationUrl>
+            <roles>
+                <role>Student</role>
+            </roles>
+        </developer>
         <!--TODO Bitte eure Daten angeben-->
     </developers>
 
