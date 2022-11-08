@@ -1,11 +1,10 @@
 package de.whs.slab.wise2223.project.labyrinth.model;
 
-import com.sun.istack.internal.NotNull;
 import org.json.simple.JSONObject;
 
 public interface Level {
-    @NotNull int getWidth();
-    @NotNull int getHeight();
+    int getWidth();
+    int getHeight();
 
     Coordinate getStart();
     Coordinate getEnd();

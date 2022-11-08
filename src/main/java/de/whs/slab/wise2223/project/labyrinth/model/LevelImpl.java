@@ -1,6 +1,5 @@
 package de.whs.slab.wise2223.project.labyrinth.model;
 
-import com.sun.istack.internal.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,7 +20,7 @@ public class LevelImpl implements Level {
         fields = parseBytes((JSONArray) json.get("fields"));
     }
 
-    public LevelImpl(@NotNull int width, @NotNull int height, Coordinate start, Coordinate end, byte[] fields) {
+    public LevelImpl(int width, int height, Coordinate start, Coordinate end, byte[] fields) {
         this.width = width;
         this.height = height;
         this.start = start;
