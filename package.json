@@ -1,0 +1,26 @@
+{
+  "name": "labyrinth",
+  "version": "0.0.1-ALPHA",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WHS-SLAB-WiSe22-23-P1/Labyrinth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WHS-SLAB-WiSe22-23-P1/Labyrinth/issues"
+  },
+  "homepage": "https://github.com/WHS-SLAB-WiSe22-23-P1/Labyrinth#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "husky": "^8.0.2",
+    "standard-version": "^9.5.0"
+  }
+}

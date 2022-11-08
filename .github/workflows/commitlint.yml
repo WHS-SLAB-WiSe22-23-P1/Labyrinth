@@ -1,0 +1,19 @@
+name: Commitlint
+
+on:
+  - merge
+
+
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: npm
+        run: npm ci --cache .npm --prefer-offline
+      - name: lint
+        run: echo "${{github.event.title}}" | npx commitlint --config commitlint.config.js
