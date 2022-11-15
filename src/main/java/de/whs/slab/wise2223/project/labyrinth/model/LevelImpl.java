@@ -2,6 +2,8 @@ package de.whs.slab.wise2223.project.labyrinth.model;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class LevelImpl implements Level {
     private final int width;
@@ -11,6 +13,10 @@ public class LevelImpl implements Level {
     private final Coordinate end;
 
     private final byte[] fields;
+
+    public LevelImpl(String json) throws ParseException {
+        this((JSONObject) new JSONParser().parse(json));
+    }
 
     public LevelImpl(JSONObject json) {
         width = (int) json.get("width");
@@ -38,8 +44,20 @@ public class LevelImpl implements Level {
 
     private byte[] parseBytes(final JSONArray json) {
         byte[] fields = new byte[width * height];
-        for(int i = 0; i < fields.length; i++) {
-            // TODO(nbenson): Parse json to bytes
+        for (int index = 0; index < fields.length; index++) {
+            final int rowIndex = index / width;
+            final int columnIndex = index % width;
+
+            final JSONArray row = (JSONArray) json.get(rowIndex);
+
+            final long fieldNum = (long) row.get(columnIndex);
+            final boolean field = fieldNum != 0;
+
+            final int fieldsIndex = index % 8;
+            final int fieldIndex = index / 8;
+            final byte fieldPosition = (byte) (1 >> fieldIndex);
+
+            fields[fieldsIndex] = (byte) (fields[fieldsIndex] | (field ? fieldPosition : 0));
         }
 
         return fields;
