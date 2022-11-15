@@ -2,6 +2,7 @@ package de.whs.slab.wise2223.project.labyrinth.level.generator.model;
 
 import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class Graph {
     }
 
     public boolean hasEdge(Coordinate a, Coordinate b) throws IllegalArgumentException {
-        return edges.get(edgeCoordinate(a, b));
+        return edges.getOrDefault(edgeCoordinate(a, b), false);
     }
 
     public Node nodeAt(Coordinate position) {
@@ -70,5 +71,50 @@ public class Graph {
         }
 
         return nodes;
+    }
+
+    public boolean[][] getBlocks() {
+        final boolean[][] blocks = new boolean[size.height * 2][size.width * 2];
+
+        for (int x = 0; x < size.width; x++) {
+            for (int y = 0; y < size.height; y++) {
+                Coordinate coordinate = new Coordinate(x, y);
+                Node node = nodeAt(coordinate);
+
+                if (node.hasRight()) {
+                    Coordinate edge = edgeCoordinate(coordinate, coordinate.right());
+                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
+                }
+                if (node.hasLeft()) {
+                    Coordinate edge = edgeCoordinate(coordinate, coordinate.left());
+                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
+                }
+                if (node.hasTop()) {
+                    Coordinate edge = edgeCoordinate(coordinate, coordinate.top());
+                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
+                }
+                if (node.hasBottom()) {
+                    Coordinate edge = edgeCoordinate(coordinate, coordinate.bottom());
+                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
+                }
+            }
+        }
+
+        return blocks;
+    }
+
+    public boolean[][] fillUpField(int size) {
+        boolean[][] field = new boolean[size][size];
+
+        for (final boolean[] row : field)
+            Arrays.fill(row, false);
+
+        for (int i = 1; i < field.length - 1; i += 2) {
+            for (int j = 1; j < field[i].length - 1; j += 2) {
+                field[i][j] = true;
+            }
+        }
+
+        return field;
     }
 }

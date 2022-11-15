@@ -20,6 +20,14 @@ public class LevelImpl implements Level {
         fields = parseBytes((JSONArray) json.get("fields"));
     }
 
+    public LevelImpl(int width, int height, Coordinate start, Coordinate end, boolean[][] fields) {
+        this.width = width;
+        this.height = height;
+        this.start = start;
+        this.end = end;
+        this.fields = parseBytes(fields);
+    }
+
     public LevelImpl(int width, int height, Coordinate start, Coordinate end, byte[] fields) {
         this.width = width;
         this.height = height;
@@ -28,7 +36,7 @@ public class LevelImpl implements Level {
         this.fields = fields;
     }
 
-    private byte[] parseBytes(JSONArray json) {
+    private byte[] parseBytes(final JSONArray json) {
         byte[] fields = new byte[width * height];
         for(int i = 0; i < fields.length; i++) {
             // TODO(nbenson): Parse json to bytes
