@@ -74,7 +74,7 @@ public class Graph {
     }
 
     public boolean[][] getBlocks() {
-        final boolean[][] blocks = new boolean[size.height * 2][size.width * 2];
+        final boolean[][] blocks = fillUpField(size.height * 2);
 
         for (int x = 0; x < size.width; x++) {
             for (int y = 0; y < size.height; y++) {

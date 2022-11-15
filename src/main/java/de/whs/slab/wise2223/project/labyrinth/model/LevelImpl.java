@@ -63,6 +63,26 @@ public class LevelImpl implements Level {
         return fields;
     }
 
+    private byte[] parseBytes(final boolean[][] json) {
+        byte[] fields = new byte[width * height];
+        for (int index = 0; index < fields.length; index++) {
+            final int rowIndex = index / width;
+            final int columnIndex = index % width;
+
+            final boolean[] row = json[rowIndex];
+
+            final boolean field = row[columnIndex];
+
+            final int fieldsIndex = index % 8;
+            final int fieldIndex = index / 8;
+            final byte fieldPosition = (byte) (1 >> fieldIndex);
+
+            fields[fieldsIndex] = (byte) (fields[fieldsIndex] | (field ? fieldPosition : 0));
+        }
+
+        return fields;
+    }
+
     @Override
     public int getWidth() {
         return width;
@@ -110,7 +130,7 @@ public class LevelImpl implements Level {
                     int finalX = x;
                     add(new JSONArray() {{
                         for (int y = 0; y < getHeight(); y++) {
-                            add(getFieldAt(new Coordinate(finalX, y)));
+                            add(getFieldAt(new Coordinate(finalX, y))? 1 : 0);
                         }
                     }});
                 }

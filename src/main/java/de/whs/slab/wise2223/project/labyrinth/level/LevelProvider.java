@@ -16,6 +16,6 @@ public abstract class LevelProvider {
     }
 
     public void printLevel() {
-        System.out.println(level.toJSON().toJSONString());
+        System.out.println(getLevel().toJSON().toJSONString());
     }
 }
