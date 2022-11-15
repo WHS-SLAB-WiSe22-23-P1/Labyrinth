@@ -9,6 +9,8 @@ public class Maze2D implements IMaze{
     private Main parentProcessing;
     private Coordinate start;
     private Coordinate end;
+    private int sizeHeight;
+    private int sizeWidth;
     private ArrayList<ArrayList<Integer>> grid;
 
     public Maze2D(Main parentProcessing) {
@@ -17,16 +19,25 @@ public class Maze2D implements IMaze{
 
     public void fillMaze(Level level) {
         grid = new ArrayList<ArrayList<Integer>>();
+        sizeHeight = 15;
+        sizeWidth = 20;
 
-        //Fill random, so we still have something to show
-        start = new Coordinate((int)(Math.random()*(10)), (int)(Math.random()*(10)));
-        end = new Coordinate((int)(Math.random()*(10)), (int)(Math.random()*(10)));
-        for (int y = 0; y < 10; y++) {
+        for (int y = 0; y < sizeHeight; y++) {
             ArrayList<Integer> row = new ArrayList<Integer>();
-            for (int x = 0; x < 10; x++) {
-                row.add((int)(Math.random()*(2)));
+            for (int x = 0; x < sizeWidth; x++) {
+                row.add(1);
             }
             grid.add(row);
+        }
+
+        //Fill random, so we still have something to show
+        start = new Coordinate((int)(Math.random()*(sizeWidth)), (int)(Math.random()*(sizeHeight)));
+        end = new Coordinate((int)(Math.random()*(sizeWidth)), (int)(Math.random()*(sizeHeight)));
+        for (int y = 1; y < sizeHeight - 1; y++) {
+            ArrayList<Integer> row = grid.get(y);
+            for (int x = 1; x < sizeWidth - 1; x++) {
+                row.set(x, (int)(Math.random()*(2)));
+            }
         }
 
         //Read from Level
@@ -44,16 +55,21 @@ public class Maze2D implements IMaze{
 
     public void drawMaze() {
         int sizeOfBox = 25;
+        int offSetX = 0;
+        int offSetY = 0;
+
+        parentProcessing.background(153);
 
         for (int y = 0; y < grid.size(); y++) {
             for (int x = 0; x < grid.get(y).size(); x++) {
+                parentProcessing.noStroke();
                 if(grid.get(y).get(x) == 0) {
                     parentProcessing.fill(255);
-                    parentProcessing.rect(x * sizeOfBox, y * sizeOfBox, sizeOfBox, sizeOfBox);
+                    parentProcessing.rect(offSetX + x * sizeOfBox, offSetY + y * sizeOfBox, sizeOfBox, sizeOfBox);
                 }
                 else {
                     parentProcessing.fill(153);
-                    parentProcessing.rect(x * sizeOfBox, y * sizeOfBox, sizeOfBox, sizeOfBox);
+                    parentProcessing.rect(offSetX + x * sizeOfBox, offSetY + y * sizeOfBox, sizeOfBox, sizeOfBox);
                 }
             }
         }
