@@ -17,6 +17,10 @@ public class Maze2D implements IMaze{
         this.parentProcessing = parentProcessing;
     }
 
+    public Coordinate getStart() {
+        return start;
+    }
+
     public void fillMaze(Level level) {
         grid = new ArrayList<ArrayList<Integer>>();
         sizeHeight = 15;
