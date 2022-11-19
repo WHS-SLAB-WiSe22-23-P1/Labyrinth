@@ -41,6 +41,21 @@ public class Coordinate {
         return new Coordinate(getX(), getY() - 1);
     }
 
+    public Coordinate nextTo(Directions direction){
+        switch(direction){
+            case RIGHT:
+                return right();
+            case LEFT:
+                return left();
+            case UP:
+                return top();
+            case DOWN:
+                return bottom();
+            default:
+                return null;
+        }
+    }
+
     public boolean isNextTo(Coordinate other) {
         return Math.abs(getX() - other.getX()) + Math.abs(getY() - other.getY()) == 1;
     }
