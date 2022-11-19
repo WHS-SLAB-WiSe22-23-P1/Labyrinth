@@ -36,7 +36,9 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
 
         recursivePathGeneration();
 
-        return new LevelImpl(size.width, size.height, start, end, graph.getBlocks());
+        final boolean[][] blocks = graph.getBlocks();
+
+        return new LevelImpl(blocks[0].length, blocks.length, start, end, blocks);
     }
 
     private void recursivePathGeneration() {

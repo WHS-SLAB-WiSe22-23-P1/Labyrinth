@@ -74,43 +74,21 @@ public class Graph {
     }
 
     public boolean[][] getBlocks() {
-        final boolean[][] blocks = fillUpField(size.height * 2);
+        final boolean[][] blocks = fillUpField(size.width * 2 + 1, size.height * 2 + 1);
 
-        for (int x = 0; x < size.width; x++) {
-            for (int y = 0; y < size.height; y++) {
-                Coordinate coordinate = new Coordinate(x, y);
-                Node node = nodeAt(coordinate);
-
-                if (node.hasRight()) {
-                    Coordinate edge = edgeCoordinate(coordinate, coordinate.right());
-                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
-                }
-                if (node.hasLeft()) {
-                    Coordinate edge = edgeCoordinate(coordinate, coordinate.left());
-                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
-                }
-                if (node.hasTop()) {
-                    Coordinate edge = edgeCoordinate(coordinate, coordinate.top());
-                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
-                }
-                if (node.hasBottom()) {
-                    Coordinate edge = edgeCoordinate(coordinate, coordinate.bottom());
-                    blocks[edge.getX() * 2][edge.getY() * 2] = true;
-                }
-            }
-        }
+        edges.forEach((coordinate, hasEdge) -> blocks[coordinate.getY() * 2 + 1][coordinate.getX() + 2] = hasEdge);
 
         return blocks;
     }
 
-    public boolean[][] fillUpField(int size) {
-        boolean[][] field = new boolean[size][size];
+    private boolean[][] fillUpField(int width, int height) {
+        boolean[][] field = new boolean[height][width];
 
         for (final boolean[] row : field)
             Arrays.fill(row, false);
 
-        for (int i = 1; i < field.length - 1; i += 2) {
-            for (int j = 1; j < field[i].length - 1; j += 2) {
+        for (int i = 1; i < field.length; i += 2) {
+            for (int j = 1; j < field[i].length; j += 2) {
                 field[i][j] = true;
             }
         }

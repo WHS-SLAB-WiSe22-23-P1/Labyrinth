@@ -9,7 +9,7 @@ public class Coordinate {
     private final int y;
 
     public Coordinate(JSONObject json) {
-        this((int) json.get("x"), (int) json.get("y"));
+        this((int) (long)json.get("x"), (int) (long)json.get("y"));
     }
 
     public Coordinate(int x, int y) {
