@@ -5,36 +5,15 @@ import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Graph {
     public final Dimensions size;
-
-    private final Map<Coordinate, Boolean> edges;
+    private final Map<EdgeCoordinate, Boolean> edges;
 
     public Graph(Dimensions size) {
         this.size = size;
         edges = new HashMap<>();
-    }
-
-    private Coordinate edgeCoordinate(Coordinate a, Coordinate b) throws IllegalArgumentException {
-        if (!a.isNextTo(b)) {
-            throw new IllegalArgumentException(String.format("Coordinate %s is not next to %s", a, b));
-        }
-
-        if (!size.contains(a) || !size.contains(b)) {
-            throw new IllegalArgumentException("Coordinates are out of bounds.");
-        }
-
-        final int deltaX = b.getX() - a.getX();
-        final int deltaY = b.getY() - a.getY();
-
-        if (deltaX == 0) {
-            final int x = a.getX();
-            return new Coordinate(x, a.getY() + Math.min(0, deltaY));
-        } else {
-            final int y = a.getY();
-            return new Coordinate(a.getY() + Math.min(0, deltaX), y);
-        }
     }
 
     public void addEdge(Coordinate a, Coordinate b) throws IllegalArgumentException {
@@ -46,11 +25,11 @@ public class Graph {
     }
 
     public void setEdge(Coordinate a, Coordinate b, boolean value) throws IllegalArgumentException {
-        edges.put(edgeCoordinate(a, b), value);
+        edges.put(new EdgeCoordinate(a, b), value);
     }
 
     public boolean hasEdge(Coordinate a, Coordinate b) throws IllegalArgumentException {
-        return edges.getOrDefault(edgeCoordinate(a, b), false);
+        return edges.getOrDefault(new EdgeCoordinate(a, b), false);
     }
 
     public Node nodeAt(Coordinate position) {
@@ -76,7 +55,7 @@ public class Graph {
     public boolean[][] getBlocks() {
         final boolean[][] blocks = fillUpField(size.width * 2 + 1, size.height * 2 + 1);
 
-        edges.forEach((coordinate, hasEdge) -> blocks[coordinate.getY() * 2 + 1][coordinate.getX() + 2] = hasEdge);
+        edges.forEach((coordinate, hasEdge) -> blocks[coordinate.a.getY() + coordinate.b.getY() + 1][coordinate.a.getX() + coordinate.b.getX() + 1] = hasEdge);
 
         return blocks;
     }
@@ -94,5 +73,36 @@ public class Graph {
         }
 
         return field;
+    }
+
+    private class EdgeCoordinate {
+        public final Coordinate a;
+        public final Coordinate b;
+
+        private EdgeCoordinate(Coordinate a, Coordinate b) throws IllegalArgumentException{
+            if (!a.isNextTo(b)) {
+                throw new IllegalArgumentException(String.format("Coordinate %s is not next to %s", a, b));
+            }
+            if (a.hashCode() > b.hashCode()) {
+                this.a = a;
+                this.b = b;
+            } else {
+                this.a = b;
+                this.b = a;
+            }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof EdgeCoordinate)) return false;
+            EdgeCoordinate that = (EdgeCoordinate) o;
+            return a.equals(that.a) && b.equals(that.b);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(a, b);
+        }
     }
 }

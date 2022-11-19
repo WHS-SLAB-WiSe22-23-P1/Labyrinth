@@ -33,7 +33,6 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
 
     @Override
     protected Level createNewLevel() {
-
         recursivePathGeneration();
 
         final boolean[][] blocks = graph.getBlocks();

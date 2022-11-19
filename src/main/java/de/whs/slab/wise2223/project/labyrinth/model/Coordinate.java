@@ -30,7 +30,7 @@ public class Coordinate {
     }
 
     public Coordinate top() {
-        return new Coordinate(getX(), getY() + 1);
+        return new Coordinate(getX(), getY() - 1);
     }
 
     public Coordinate right() {
@@ -38,7 +38,7 @@ public class Coordinate {
     }
 
     public Coordinate bottom() {
-        return new Coordinate(getX(), getY() - 1);
+        return new Coordinate(getX(), getY() + 1);
     }
 
     public Coordinate nextTo(Directions direction){
