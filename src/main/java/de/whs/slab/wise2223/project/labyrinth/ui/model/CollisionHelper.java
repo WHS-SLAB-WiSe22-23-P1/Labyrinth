@@ -17,35 +17,35 @@ public class CollisionHelper {
 
         if (ballY < boxTop) { //Top of box
             if (ballX < boxLeft) { //Top Left of box
-                return calcDistance(boxLeft, boxTop, boxX, boxY) < ballRadius;
+                return calcDistance(boxLeft, boxTop, ballX, ballY) <= ballRadius - 1;
             }
             else if (ballX < boxRight) { //Top Middle of box
-                return boxTop < (ballY + ballRadius);
+                return boxTop <= (ballY + ballRadius);
             }
             else { //Top Right of box
-                return calcDistance(boxLeft, boxTop, boxX, boxY) < ballRadius;
+                return calcDistance(boxRight, boxTop, ballX, ballY) <= ballRadius - 1;
             }
         }
         else if(ballY < boxBottom) { //Middle of box
             if (ballX < boxLeft) { //Middle Left of box
-                return boxLeft < (ballX + ballRadius);
+                return boxLeft <= (ballX + ballRadius);
             }
-            else if (ballX < boxRight) { //Inside of box so it's stuck
+            else if (ballX <= boxRight) { //Inside of box so it's stuck
                 return true;
             }
             else { //Middle Right of box
-                return boxRight > (ballX - ballRadius);
+                return boxRight >= (ballX - ballRadius);
             }
         }
         else { //Bottom of box
             if (ballX < boxLeft) { //Bottom Left of box
-                return calcDistance(boxLeft, boxTop, boxX, boxY) < ballRadius;
+                return calcDistance(boxLeft, boxBottom, ballX, ballY) <= ballRadius - 1;
             }
             else if (ballX < boxRight) { //Bottom Middle of box
-                return boxBottom > (ballY - ballRadius);
+                return boxBottom >= (ballY - ballRadius);
             }
             else { //Bottom Right of box
-                return calcDistance(boxLeft, boxTop, boxX, boxY) < ballRadius;
+                return calcDistance(boxRight, boxBottom, ballX, ballY) <= ballRadius - 1;
             }
         }
     }

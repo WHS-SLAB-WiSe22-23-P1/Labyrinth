@@ -11,6 +11,7 @@ public class Maze2D implements IMaze{
     private Coordinate end;
     private int sizeHeight;
     private int sizeWidth;
+    private float cellSize;
     private ArrayList<ArrayList<Integer>> grid;
 
     public Maze2D(Main parentProcessing) {
@@ -21,7 +22,11 @@ public class Maze2D implements IMaze{
         return start;
     }
 
+    public float getCellSize() {return cellSize;}
+
     public Integer getCell(Coordinate cords) {
+        if (cords.getX() < 0 || cords.getY() < 0)
+            return 1;
         if (grid.size() > cords.getY()) {
             ArrayList<Integer> row = grid.get(cords.getY());
             if (row.size() > cords.getX())
@@ -34,6 +39,7 @@ public class Maze2D implements IMaze{
         grid = new ArrayList<ArrayList<Integer>>();
         sizeHeight = 15;
         sizeWidth = 20;
+        cellSize = 25f;
 
         for (int y = 0; y < sizeHeight; y++) {
             ArrayList<Integer> row = new ArrayList<Integer>();
@@ -53,6 +59,9 @@ public class Maze2D implements IMaze{
             }
         }
 
+        grid.get(start.getY()).set(start.getX(), 0);
+        grid.get(end.getY()).set(end.getX(), 0);
+
         //Read from Level
         /*
         start = level.getStart();
@@ -67,7 +76,6 @@ public class Maze2D implements IMaze{
     }
 
     public void drawMaze() {
-        int sizeOfBox = 25;
         int offSetX = 0;
         int offSetY = 0;
 
@@ -78,23 +86,23 @@ public class Maze2D implements IMaze{
                 parentProcessing.noStroke();
                 if(grid.get(y).get(x) == 0) {
                     parentProcessing.fill(255);
-                    parentProcessing.rect(offSetX + x * sizeOfBox, offSetY + y * sizeOfBox, sizeOfBox, sizeOfBox);
+                    parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
                 }
                 else {
                     parentProcessing.fill(153);
-                    parentProcessing.rect(offSetX + x * sizeOfBox, offSetY + y * sizeOfBox, sizeOfBox, sizeOfBox);
+                    parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
                 }
             }
         }
 
         if (start != null) {
             parentProcessing.fill(253, 102, 0);
-            parentProcessing.rect(start.getX() * sizeOfBox, start.getY() * sizeOfBox, sizeOfBox, sizeOfBox);
+            parentProcessing.rect(start.getX() * cellSize, start.getY() * cellSize, cellSize, cellSize);
         }
 
         if (end != null) {
             parentProcessing.fill(0, 120, 255);
-            parentProcessing.rect(end.getX() * sizeOfBox, end.getY() * sizeOfBox, sizeOfBox, sizeOfBox);
+            parentProcessing.rect(end.getX() * cellSize, end.getY() * cellSize, cellSize, cellSize);
         }
     }
 }
