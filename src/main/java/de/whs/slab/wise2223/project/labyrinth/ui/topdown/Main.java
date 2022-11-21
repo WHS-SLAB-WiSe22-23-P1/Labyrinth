@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main extends PApplet {
-    private Maze2D maze;
-    private Player2D player;
+    public Maze2D maze;
+    public Player2D player;
     private ArrayList<Integer> currentlyPressed;
 
     public static void main(String[] args) {

@@ -32,11 +32,20 @@ public class Player2D {
 
     public void movePlayer(ArrayList<Integer> currentlyPressed) {
         float speed = 1f;
+        Coordinate playerCords = new Coordinate((int)(positionX / 25f), (int)(positionY / 25f));
         for (int i = 0; i < currentlyPressed.size(); i++) {
             switch (currentlyPressed.get(i)) {
                 case 87:
                     // W
-                    positionY -= speed;
+                    Coordinate boxCords = new Coordinate(playerCords.getX(), playerCords.getY() - 1);
+                    if (parentProcessing.maze.getCell(boxCords) == 1) {
+                        if (!CollisionHelper.collideWithWall(boxCords, 25f, positionX, positionY, 25f)) {
+                            positionY -= speed;
+                        }
+                    }
+                    else {
+                        positionY -= speed;
+                    }
                     break;
                 case 83:
                     // S

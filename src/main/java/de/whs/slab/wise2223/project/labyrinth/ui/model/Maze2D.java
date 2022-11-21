@@ -21,6 +21,15 @@ public class Maze2D implements IMaze{
         return start;
     }
 
+    public Integer getCell(Coordinate cords) {
+        if (grid.size() > cords.getY()) {
+            ArrayList<Integer> row = grid.get(cords.getY());
+            if (row.size() > cords.getX())
+                return row.get(cords.getX());
+        }
+        return 1;
+    }
+
     public void fillMaze(Level level) {
         grid = new ArrayList<ArrayList<Integer>>();
         sizeHeight = 15;
