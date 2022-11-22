@@ -3,13 +3,13 @@ package de.whs.slab.wise2223.project.labyrinth.ui.model;
 import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
 
 public class CollisionHelper {
-    static public boolean collideWithWall(Coordinate boxCord, float boxSize, float ballX, float ballY, float ballRadius) {
+    static public boolean collideBallWithWall(Coordinate boxCord, float boxSize, float ballX, float ballY, float ballRadius) {
         float boxX = (boxCord.getX() * boxSize) + (boxSize / 2);
         float boxY = (boxCord.getY() * boxSize) + (boxSize / 2);
-        return collideWithBox(boxX, boxY, boxSize, ballX, ballY, ballRadius);
+        return collideBallWithBox(boxX, boxY, boxSize, ballX, ballY, ballRadius);
     }
 
-    static public boolean collideWithBox(float boxX, float boxY, float boxSize, float ballX, float ballY, float ballRadius) {
+    static public boolean collideBallWithBox(float boxX, float boxY, float boxSize, float ballX, float ballY, float ballRadius) {
         float boxTop = boxY - boxSize / 2;
         float boxBottom = boxY + boxSize / 2;
         float boxLeft = boxX - boxSize / 2;

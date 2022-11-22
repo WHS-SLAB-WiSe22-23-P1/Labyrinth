@@ -44,7 +44,7 @@ public class Maze2D implements IMaze{
         for (int y = 0; y < sizeHeight; y++) {
             ArrayList<Integer> row = new ArrayList<Integer>();
             for (int x = 0; x < sizeWidth; x++) {
-                row.add(1);
+                row.add(0);
             }
             grid.add(row);
         }
@@ -59,8 +59,8 @@ public class Maze2D implements IMaze{
             }
         }
 
-        grid.get(start.getY()).set(start.getX(), 0);
-        grid.get(end.getY()).set(end.getX(), 0);
+        grid.get(start.getY()).set(start.getX(), 1);
+        grid.get(end.getY()).set(end.getX(), 1);
 
         //Read from Level
         /*
@@ -84,7 +84,7 @@ public class Maze2D implements IMaze{
         for (int y = 0; y < grid.size(); y++) {
             for (int x = 0; x < grid.get(y).size(); x++) {
                 parentProcessing.noStroke();
-                if(grid.get(y).get(x) == 0) {
+                if(grid.get(y).get(x) == 1) {
                     parentProcessing.fill(255);
                     parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
                 }
