@@ -71,16 +71,6 @@ public class Main extends PApplet {
         }
     }
 
-    private JSONObject getExampleJson() {
-        JSONObject json;
-        try {
-            json = (JSONObject) new JSONParser().parse(new FileReader("./src/main/java/de/whs/slab/wise2223/project/labyrinth/ui/model/Example.json"));
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return json;
-    }
-
     @Override
     public void keyReleased(KeyEvent event) {
         super.keyReleased(event);

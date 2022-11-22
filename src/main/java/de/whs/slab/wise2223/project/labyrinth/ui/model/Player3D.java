@@ -1,35 +1,33 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.model;
 
 import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
-import de.whs.slab.wise2223.project.labyrinth.ui.topdown.Main;
+import de.whs.slab.wise2223.project.labyrinth.ui.firstperson.Main;
 
 import java.util.ArrayList;
 
-public class Player2D {
+public class Player3D extends Player2D{
     private Main parentProcessing;
-    protected float positionX;
-    protected float positionY;
-    protected float ballSize;
+    protected float positionZ;
 
-    public Coordinate getCords() {
-        return new Coordinate((int)positionX / 25, (int)positionY / 25);
-    }
-
-    public Player2D(Main parentProcessing) {
+    public float getPositionX() { return positionX;}
+    public float getPositionY() { return positionZ;}
+    public float getPositionZ() { return positionY;}
+    public Player3D(Main parentProcessing) {
+        super(null);
         this.parentProcessing = parentProcessing;
-        this.ballSize = 12.5f;
     }
 
+    @Override
     public void drawCharacter() {
-        this.parentProcessing.fill(100, 0, 100);
-        this.parentProcessing.circle(positionX, positionY, ballSize);
+        parentProcessing.pushMatrix();
+        parentProcessing.fill(100, 0, 100);
+        parentProcessing.noStroke();
+        parentProcessing.translate(getPositionX() - ballSize, getPositionY(), getPositionZ() - ballSize);
+        parentProcessing.sphere(ballSize / 2f);
+        parentProcessing.popMatrix();
     }
 
-    public void setPosition(Coordinate cords) {
-        this.positionX = cords.getX() * 25f + 12.5f;
-        this.positionY = cords.getY() * 25f + 12.5f;
-    }
-
+    @Override
     public void movePlayer(ArrayList<Integer> currentlyPressed) {
         float speed = 1f;
         float cellSize = parentProcessing.maze.getCellSize();
@@ -44,8 +42,8 @@ public class Player2D {
                     Coordinate boxCordsTopRight = playerCords.top().right();
 
                     if (!((parentProcessing.maze.getCell(boxCordsTopLeft) == 0 && CollisionHelper.collideBallWithWall(boxCordsTopLeft, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                         (parentProcessing.maze.getCell(boxCordsTop) == 0 && CollisionHelper.collideBallWithWall(boxCordsTop, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                         (parentProcessing.maze.getCell(boxCordsTopRight) == 0 && CollisionHelper.collideBallWithWall(boxCordsTopRight, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
+                            (parentProcessing.maze.getCell(boxCordsTop) == 0 && CollisionHelper.collideBallWithWall(boxCordsTop, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
+                            (parentProcessing.maze.getCell(boxCordsTopRight) == 0 && CollisionHelper.collideBallWithWall(boxCordsTopRight, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
                         positionY -= speed;
                     }
                     break;
