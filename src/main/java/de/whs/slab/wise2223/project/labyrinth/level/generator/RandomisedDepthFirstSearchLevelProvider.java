@@ -24,8 +24,8 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
 
         this.size = size;
         random = new Random();
-        start = new Coordinate(random.nextInt(size.width), random.nextInt(size.height));
-        end = new Coordinate(random.nextInt(size.width), random.nextInt(size.height));
+        start = new Coordinate(0, 0);
+        end = new Coordinate(size.width-1, size.height-1);
 
         graph = new Graph(size);
     }
