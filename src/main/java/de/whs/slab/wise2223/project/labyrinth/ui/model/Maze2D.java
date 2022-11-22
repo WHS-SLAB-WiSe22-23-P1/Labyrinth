@@ -21,6 +21,9 @@ public class Maze2D implements IMaze{
     public Coordinate getStart() {
         return start;
     }
+    public Coordinate getEnd() {
+        return end;
+    }
 
     public float getCellSize() {return cellSize;}
 

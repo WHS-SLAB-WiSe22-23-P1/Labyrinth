@@ -9,8 +9,11 @@ public class Player2D {
     private Main parentProcessing;
     private float positionX;
     private float positionY;
-
     private  float ballSize;
+
+    public Coordinate getCords() {
+        return new Coordinate((int)positionX / 25, (int)positionY / 25);
+    }
 
     public Player2D(Main parentProcessing, float posX, float posY) {
         this.parentProcessing = parentProcessing;

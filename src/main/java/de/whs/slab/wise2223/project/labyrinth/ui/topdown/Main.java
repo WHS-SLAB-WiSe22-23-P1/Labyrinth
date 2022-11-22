@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import processing.event.KeyEvent;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ public class Main extends PApplet {
     public Player2D player;
     private ArrayList<Integer> currentlyPressed;
     private final LevelProvider levelProvider;
+    private Boolean finished = false;
     public Main(LevelProvider levelProvider) {
         this.levelProvider = levelProvider;
     }
@@ -56,6 +59,16 @@ public class Main extends PApplet {
         maze.drawMaze();
         player.movePlayer(currentlyPressed);
         player.drawCharacter();
+
+        checkForWin();
+    }
+
+    public void checkForWin() {
+        if (!finished && player.getCords().getX() == maze.getEnd().getX() && player.getCords().getY() == maze.getEnd().getY()) {
+            finished = true;
+            JOptionPane.showConfirmDialog(null,
+                    "Yes you did!", "You win!", JOptionPane.CLOSED_OPTION);
+        }
     }
 
     private JSONObject getExampleJson() {
