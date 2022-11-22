@@ -1,17 +1,16 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.topdown;
-
-import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
 import de.whs.slab.wise2223.project.labyrinth.model.Level;
-import de.whs.slab.wise2223.project.labyrinth.model.LevelImpl;
+import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player2D;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
 import java.io.FileReader;
-import org.json.simple.parser.*;
 import processing.event.KeyEvent;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -34,8 +33,7 @@ public class Main extends PApplet {
         size(600, 480);
         currentlyPressed = new ArrayList<Integer>();
 
-        //Nik has to implement this function fully
-        Level level = null;//new LevelImpl(getExampleJson());
+        Level level = null;//new StreamLevelProvider(new InputStream(System.in)).getLevel();
         maze.fillMaze(level);
         player.setPosition(maze.getStart());
     }
