@@ -14,12 +14,11 @@ import java.util.Random;
 
 public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
 
+    final Dimensions size;
     private final Coordinate start;
     private final Coordinate end;
     private final Graph graph;
     private final Random random;
-
-    final Dimensions size;
 
     public RandomisedDepthFirstSearchLevelProvider(Dimensions size) {
 
@@ -37,7 +36,7 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
 
         final boolean[][] blocks = graph.getBlocks();
 
-        return new LevelImpl(blocks[0].length, blocks.length, start, end, blocks);
+        return new LevelImpl(blocks[0].length, blocks.length, new Coordinate(start.getX() * 2 + 1, start.getY() * 2 + 1), new Coordinate(end.getX() * 2 + 1, end.getY() * 2 + 1), blocks);
     }
 
     private void recursivePathGeneration() {
@@ -45,17 +44,16 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
     }
 
     private void recursivePathGeneration(Coordinate current) {
-        for(Coordinate[] adjacent = generateCandidates(current); adjacent.length != 0; adjacent = generateCandidates(current)){
+        for (Coordinate[] adjacent = generateCandidates(current); adjacent.length != 0; adjacent = generateCandidates(current)) {
             Coordinate next = adjacent[random.nextInt(adjacent.length)];
 
             graph.addEdge(current, next);
 
             recursivePathGeneration(next);
         }
-
     }
 
-    private Coordinate[] generateCandidates(Coordinate current){
+    private Coordinate[] generateCandidates(Coordinate current) {
         Coordinate[] adjacent = new Coordinate[4];
 
         byte i = 0;
@@ -63,20 +61,17 @@ public class RandomisedDepthFirstSearchLevelProvider extends LevelProvider {
         for (Directions value : Directions.values()) {
             Coordinate next = current.nextTo(value);
 
-            if(!size.contains(next)){
+            if (!size.contains(next)) {
                 continue;
             }
 
             Node node = graph.nodeAt(next);
 
-            if(!node.hasAny()){
+            if (!node.hasAny()) {
                 adjacent[i++] = next;
             }
         }
 
         return Arrays.copyOf(adjacent, i);
-
-
     }
-
 }
