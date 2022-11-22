@@ -1,5 +1,6 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.topdown;
-import de.whs.slab.wise2223.project.labyrinth.model.Level;
+
+import de.whs.slab.wise2223.project.labyrinth.level.LevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player2D;
@@ -7,10 +8,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import processing.event.KeyEvent;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -18,9 +20,21 @@ public class Main extends PApplet {
     public Maze2D maze;
     public Player2D player;
     private ArrayList<Integer> currentlyPressed;
+    private final LevelProvider levelProvider;
+    public Main(LevelProvider levelProvider) {
+        this.levelProvider = levelProvider;
+    }
 
     public static void main(String[] args) {
-        Main newMain = new Main();
+        LevelProvider level = null;
+        try {
+            if (args.length != 1) throw new FileNotFoundException();
+
+            level = new StreamLevelProvider(new FileInputStream(args[0]));
+        } catch (FileNotFoundException e) {
+            level = new StreamLevelProvider(System.in);
+        }
+        Main newMain = new Main(level);
 
         //Give the maze the reference to this, so it can draw
         newMain.maze = new Maze2D(newMain);
@@ -33,8 +47,7 @@ public class Main extends PApplet {
         size(600, 480);
         currentlyPressed = new ArrayList<Integer>();
 
-        Level level = null;//new StreamLevelProvider(new InputStream(System.in)).getLevel();
-        maze.fillMaze(level);
+        maze.fillMaze(levelProvider.getLevel());
         player.setPosition(maze.getStart());
     }
 
