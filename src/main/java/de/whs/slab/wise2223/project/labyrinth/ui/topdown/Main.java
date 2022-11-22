@@ -1,12 +1,14 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.topdown;
 
 import de.whs.slab.wise2223.project.labyrinth.model.Level;
-import de.whs.slab.wise2223.project.labyrinth.model.LevelImpl;
+import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
+
 import java.io.FileReader;
-import org.json.simple.parser.*;
 import java.io.IOException;
 
 public class Main extends PApplet {
@@ -24,8 +26,7 @@ public class Main extends PApplet {
     public void settings() {
         size(600, 480);
 
-        //Nik has to implement this function fully
-        Level level = null;//new LevelImpl(getExampleJson());
+        Level level = new StreamLevelProvider(System.in).getLevel();
         maze.fillMaze(level);
     }
 
