@@ -12,7 +12,7 @@ public class LevelImpl implements Level {
     private final Coordinate start;
     private final Coordinate end;
 
-    private final byte[] fields;
+    private final boolean[][] fields;
 
     public LevelImpl(String json) throws ParseException {
         this((JSONObject) new JSONParser().parse(json));
@@ -31,53 +31,17 @@ public class LevelImpl implements Level {
         this.height = height;
         this.start = start;
         this.end = end;
-        this.fields = parseBytes(fields);
-    }
-
-    public LevelImpl(int width, int height, Coordinate start, Coordinate end, byte[] fields) {
-        this.width = width;
-        this.height = height;
-        this.start = start;
-        this.end = end;
         this.fields = fields;
     }
 
-    private byte[] parseBytes(final JSONArray json) {
-        byte[] fields = new byte[(int) Math.ceil(width * height / 8.0)];
-        for (int index = 0; index < getWidth() * getHeight(); index++) {
-            final int rowIndex = index % width;
-            final int columnIndex = index / width;
+    private boolean[][] parseBytes(final JSONArray json) {
+        final boolean[][] fields = new boolean[getHeight()][getWidth()];
 
-            final JSONArray row = (JSONArray) json.get(rowIndex);
-
-            final long fieldNum = (long) row.get(columnIndex);
-            final boolean field = fieldNum != 0;
-
-            final int fieldsIndex = index / 8;
-            final int fieldIndex = index % 8;
-            final byte fieldPosition = (byte) (1 << fieldIndex);
-
-            fields[fieldsIndex] = (byte) (fields[fieldsIndex] | (field ? fieldPosition : 0));
-        }
-
-        return fields;
-    }
-
-    private byte[] parseBytes(final boolean[][] json) {
-        byte[] fields = new byte[(int) Math.ceil(width * height / 8.0)];
-        for (int index = 0; index < getWidth() * getHeight(); index++) {
-            final int rowIndex = index / getWidth();
-            final int columnIndex = index % getWidth();
-
-            final boolean[] row = json[rowIndex];
-
-            final boolean field = row[columnIndex];
-
-            final int fieldsIndex = index / 8;
-            final int fieldIndex = index % 8;
-            final byte fieldPosition = (byte) (1 << fieldIndex);
-
-            fields[fieldsIndex] = (byte) (fields[fieldsIndex] | (field ? fieldPosition : 0));
+        for (int y = 0; y < getHeight(); y++) {
+            final JSONArray column = (JSONArray) json.get(y);
+            for (int x = 0; x < getWidth(); x++) {
+                fields[y][x] = (long) column.get(x) != 0;
+            }
         }
 
         return fields;
@@ -108,12 +72,7 @@ public class LevelImpl implements Level {
         if (coordinate.getX() < 0 || coordinate.getX() >= getWidth() || coordinate.getY() < 0 || coordinate.getY() >= getHeight())
             throw new IllegalArgumentException(String.format("Coordinate %s does not exist in this Level.", coordinate.toJSON().toJSONString()));
 
-        final int bitPosition = coordinate.getY() * width + coordinate.getX();
-        final int bytePosition = bitPosition / 8;
-        final byte fieldByte = fields[bytePosition];
-        final byte fieldBit = (byte) (0xFF & (bitPosition % 8));
-
-        return (fieldByte & (1 << fieldBit)) > 0;
+        return fields[coordinate.getY()][coordinate.getX()];
     }
 
     @SuppressWarnings("unchecked")
