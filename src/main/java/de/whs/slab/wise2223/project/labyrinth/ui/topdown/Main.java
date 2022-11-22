@@ -44,7 +44,8 @@ public class Main extends PApplet {
     }
 
     public void settings() {
-        size(600, 480);
+        //size(600, 480);
+        fullScreen();
         currentlyPressed = new ArrayList<Integer>();
 
         maze.fillMaze(levelProvider.getLevel());

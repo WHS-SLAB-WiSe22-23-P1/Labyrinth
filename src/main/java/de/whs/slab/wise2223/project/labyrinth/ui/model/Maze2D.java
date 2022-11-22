@@ -37,42 +37,22 @@ public class Maze2D implements IMaze{
 
     public void fillMaze(Level level) {
         grid = new ArrayList<ArrayList<Integer>>();
-        sizeHeight = 15;
-        sizeWidth = 20;
-        cellSize = 25f;
 
-        for (int y = 0; y < sizeHeight; y++) {
-            ArrayList<Integer> row = new ArrayList<Integer>();
-            for (int x = 0; x < sizeWidth; x++) {
-                row.add(0);
-            }
-            grid.add(row);
-        }
-
-        //Fill random, so we still have something to show
-        start = new Coordinate((int)(Math.random()*(sizeWidth)), (int)(Math.random()*(sizeHeight)));
-        end = new Coordinate((int)(Math.random()*(sizeWidth)), (int)(Math.random()*(sizeHeight)));
-        for (int y = 1; y < sizeHeight - 1; y++) {
-            ArrayList<Integer> row = grid.get(y);
-            for (int x = 1; x < sizeWidth - 1; x++) {
-                row.set(x, (int)(Math.random()*(2)));
+        if (level != null) {
+            cellSize = 25f;
+            start = level.getStart();
+            end = level.getEnd();
+            sizeHeight = level.getHeight();
+            sizeWidth = level.getWidth();
+            
+            for (int y = 0; y < level.getHeight(); y++) {
+                ArrayList<Integer> row = new ArrayList<Integer>();
+                for (int x = 0; x < level.getWidth(); x++) {
+                    row.add(level.getFieldAt(new Coordinate(x, y)) ? 1 : 0);
+                }
+                grid.add(row);
             }
         }
-
-        grid.get(start.getY()).set(start.getX(), 1);
-        grid.get(end.getY()).set(end.getX(), 1);
-
-        //Read from Level
-        /*
-        start = level.getStart();
-        end = level.getEnd();
-        for (int y = 0; y < level.getHeight(); y++) {
-            ArrayList<Integer> row = new ArrayList<Integer>();
-            for (int x = 0; x < level.getWidth(); x++) {
-                row.add(level.getFieldAt(new Coordinate(x, y)) ? 1 : 0);
-            }
-            grid.add(row);
-        }*/
     }
 
     public void drawMaze() {
