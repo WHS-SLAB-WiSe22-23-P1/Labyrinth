@@ -3,6 +3,7 @@ package de.whs.slab.wise2223.project.labyrinth.ui.firstperson;
 import de.whs.slab.wise2223.project.labyrinth.level.LevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze3D;
+import de.whs.slab.wise2223.project.labyrinth.ui.model.Mode3D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player3D;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -20,6 +21,7 @@ public class Main extends PApplet {
     private ArrayList<Integer> currentlyPressed;;
     private final LevelProvider levelProvider;
     private Boolean finished = false;
+    private Mode3D mode3D = Mode3D.birdView;
 
     public Main(LevelProvider levelProvider) {
         this.levelProvider = levelProvider;
@@ -54,11 +56,24 @@ public class Main extends PApplet {
 
     public void draw() {
         background(204);
-        camera(player.getPositionX(), -200.0f, player.getPositionZ() + 50, player.getPositionX(), 0.0f, player.getPositionZ(), 0.0f, 1.0f, 0.0f);
 
-        maze.drawMaze();
-        player.movePlayer(currentlyPressed);
-        player.drawCharacter();
+        switch (mode3D) {
+            case firstPerson:
+                float centerPosX = player.getPositionX() * 4f + 1f * (float)Math.cos(player.rotationX);
+                float centerPosY = 10f;//player.getPositionX() + 1f * (float)Math.cos(player.rotationX);
+                float centerPosZ = player.getPositionZ() * 4f + 1f * (float)Math.sin(player.rotationX);
+                camera(player.getPositionX() * 4f, 10f, player.getPositionZ()  * 4f, centerPosX, centerPosY, centerPosZ, 0.0f, 1.0f, 0.0f);
+                break;
+            case thirdPerson:
+                break;
+            case birdView:
+                camera(player.getPositionX(), -200.0f, player.getPositionZ() + 50, player.getPositionX(), 0.0f, player.getPositionZ(), 0.0f, 1.0f, 0.0f);
+                break;
+        }
+
+        maze.drawMaze(mode3D);
+        player.movePlayer(currentlyPressed, mode3D);
+        player.drawCharacter(mode3D);
 
         checkForWin();
     }
@@ -87,5 +102,21 @@ public class Main extends PApplet {
         if (!currentlyPressed.contains(event.getKeyCode())) {
             currentlyPressed.add(event.getKeyCode());
         }
+
+        if (event.getKey() == 't' || event.getKey() == 'T') {
+            if (mode3D == Mode3D.birdView) {
+                mode3D = Mode3D.firstPerson;
+            }
+            else {
+                mode3D = Mode3D.birdView;
+            }
+        }
+    }
+
+    @Override
+    public void mouseMoved() {
+        float cameraRotateX = (mouseX - pmouseX) * TWO_PI / width;
+        float cameraRotateY = (pmouseY - mouseY) * TWO_PI / height;
+        player.rotatePlayer(cameraRotateX, cameraRotateY);
     }
 }

@@ -8,17 +8,23 @@ public class Maze3D extends Maze2D {
     public Maze3D(Main parentProcessing) {
         super(null);
         this.parentProcessing = parentProcessing;
+        this.cellSize = 25f;
     }
 
-    @Override
-    public void drawMaze() {
+    public void drawMaze(Mode3D mode3D) {
         int offSetX = 0;
         int offSetY = 0;
 
+        float scale = 1f;
+
+        if (mode3D == Mode3D.firstPerson) {
+            scale = 4f;
+        }
+
         parentProcessing.pushMatrix();
-        parentProcessing.translate(sizeWidth * 12.5f, -1.0f, sizeHeight * 12.5f);
+        parentProcessing.translate(sizeWidth * cellSize / 2 * scale, cellSize / 2, sizeHeight * cellSize / 2 * scale);
         parentProcessing.fill(128,128,128);
-        parentProcessing.box(sizeWidth * 25f, 1.0f, sizeHeight * 25f);
+        parentProcessing.box(sizeWidth * cellSize * scale, 0.5f, sizeHeight * cellSize * scale);
         parentProcessing.popMatrix();
 
         for (int y = 0; y < grid.size(); y++) {
@@ -28,8 +34,8 @@ public class Maze3D extends Maze2D {
                     parentProcessing.fill(153);
                     parentProcessing.pushMatrix();
                     //parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
-                    parentProcessing.translate(offSetX + x * cellSize,0 , offSetY + y * cellSize);
-                    parentProcessing.box(cellSize);
+                    parentProcessing.translate(offSetX + x * cellSize * scale,0 , offSetY + y * cellSize * scale);
+                    parentProcessing.box(cellSize * scale);
                     parentProcessing.popMatrix();
                 }
             }

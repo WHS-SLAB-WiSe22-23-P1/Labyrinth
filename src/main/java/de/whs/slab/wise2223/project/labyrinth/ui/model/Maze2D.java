@@ -16,6 +16,8 @@ public class Maze2D implements IMaze{
 
     public Maze2D(Main parentProcessing) {
         this.parentProcessing = parentProcessing;
+
+        cellSize = 25f;
     }
 
     public Coordinate getStart() {
@@ -42,7 +44,6 @@ public class Maze2D implements IMaze{
         grid = new ArrayList<ArrayList<Integer>>();
 
         if (level != null) {
-            cellSize = 25f;
             start = level.getStart();
             end = level.getEnd();
             sizeHeight = level.getHeight();
