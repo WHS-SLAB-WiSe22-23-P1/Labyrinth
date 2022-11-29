@@ -8,15 +8,17 @@ import java.util.ArrayList;
 
 public class Maze2D implements IMaze {
     private PApplet parentProcessing;
-    private Coordinate start;
-    private Coordinate end;
-    private int sizeHeight;
-    private int sizeWidth;
-    private float cellSize;
-    private ArrayList<ArrayList<Integer>> grid;
+    protected Coordinate start;
+    protected Coordinate end;
+    protected int sizeHeight;
+    protected int sizeWidth;
+    protected float cellSize;
+    protected ArrayList<ArrayList<Integer>> grid;
 
     public Maze2D(PApplet parentProcessing) {
         this.parentProcessing = parentProcessing;
+
+        cellSize = 25f;
     }
 
     public Coordinate getStart() {
@@ -44,7 +46,6 @@ public class Maze2D implements IMaze {
         grid = new ArrayList<ArrayList<Integer>>();
 
         if (level != null) {
-            cellSize = 25f;
             start = level.getStart();
             end = level.getEnd();
             sizeHeight = level.getHeight();

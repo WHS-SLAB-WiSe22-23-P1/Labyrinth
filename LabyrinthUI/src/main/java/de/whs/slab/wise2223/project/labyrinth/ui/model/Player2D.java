@@ -9,17 +9,9 @@ public class Player2D {
     private PApplet parentProcessing;
     private Maze2D maze;
 
-    private float positionX;
-    private float positionY;
-    private float ballSize;
-
-    public Player2D(PApplet parentProcessing, Maze2D maze, float posX, float posY) {
-        this.parentProcessing = parentProcessing;
-        this.maze = maze;
-        this.positionX = posX;
-        this.positionY = posY;
-        this.ballSize = 12.5f;
-    }
+    protected float positionX;
+    protected float positionY;
+    public float ballSize;
 
     public Player2D(PApplet parentProcessing, Maze2D maze) {
         this.parentProcessing = parentProcessing;
