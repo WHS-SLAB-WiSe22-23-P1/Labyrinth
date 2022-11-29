@@ -13,17 +13,14 @@ public class Maze3D extends Maze2D {
     }
 
     public void drawMaze(Mode3D mode3D) {
-        int offSetX = 0;
-        int offSetY = 0;
-
         float scale = 1f;
 
         if (mode3D == Mode3D.firstPerson) {
-            scale = 4f;
+            scale = 20f;
         }
 
         parentProcessing.pushMatrix();
-        parentProcessing.translate(sizeWidth * cellSize / 2 * scale, 50, sizeHeight * cellSize / 2 * scale);
+        parentProcessing.translate(sizeWidth * cellSize / 2 * scale, cellSize / 2 * scale, sizeHeight * cellSize / 2 * scale);
         parentProcessing.fill(128,128,128);
         parentProcessing.box(sizeWidth * cellSize * scale, 0.5f, sizeHeight * cellSize * scale);
         parentProcessing.popMatrix();

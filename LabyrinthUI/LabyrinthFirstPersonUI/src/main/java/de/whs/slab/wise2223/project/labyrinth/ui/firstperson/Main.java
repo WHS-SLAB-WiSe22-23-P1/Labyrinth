@@ -63,10 +63,10 @@ public class Main extends PApplet {
 
         switch (mode3D) {
             case firstPerson:
-                float centerPosX = player.getPositionX() * 4f + 1f * (float)Math.cos(player.rotationX);
+                float centerPosX = (player.getPositionX() - player.ballSize) * 20f + 1f * (float)Math.cos(player.rotationX);
                 float centerPosY = 10f;//player.getPositionX() + 1f * (float)Math.cos(player.rotationX);
-                float centerPosZ = player.getPositionZ() * 4f + 1f * (float)Math.sin(player.rotationX);
-                camera(player.getPositionX() * 4f, 10f, player.getPositionZ()  * 4f, centerPosX, centerPosY, centerPosZ, 0.0f, 1.0f, 0.0f);
+                float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationX);
+                camera((player.getPositionX() - player.ballSize) * 20f, 10f, (player.getPositionZ() - player.ballSize) * 20f, centerPosX, centerPosY, centerPosZ, 0.0f, 1.0f, 0.0f);
                 break;
             case thirdPerson:
                 break;

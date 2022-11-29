@@ -11,7 +11,7 @@ public class Player2D {
 
     protected float positionX;
     protected float positionY;
-    protected float ballSize;
+    public float ballSize;
 
     public Player2D(PApplet parentProcessing, Maze2D maze) {
         this.parentProcessing = parentProcessing;
