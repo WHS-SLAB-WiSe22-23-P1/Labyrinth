@@ -1,16 +1,12 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.firstperson;
 
 import de.whs.slab.wise2223.project.labyrinth.model.LevelProvider;
-import de.whs.slab.wise2223.project.labyrinth.ui.LevelUI;
 import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze3D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Mode3D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player3D;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
-import processing.core.PFont;
+import processing.core.PImage;
 import processing.event.KeyEvent;
 
 import javax.swing.*;
@@ -55,8 +51,14 @@ public class Main extends PApplet {
         size(800, 600, P3D);
         //fullScreen();
         currentlyPressed = new ArrayList<Integer>();
+        PImage stoneFloor = loadImage("./Textures/StoneFloor.png",  "png");
+        PImage stoneWall = loadImage("./Textures/StoneWall.png", "png");
 
+        PImage skyBox = loadImage("./Textures/SkyBox.png", "png");
+
+        maze.setImages(stoneFloor, stoneWall);
         maze.fillMaze(levelProvider.getLevel());
+        player.SetImages(skyBox);
         player.setPosition(maze.getStart());
     }
 
@@ -84,15 +86,19 @@ public class Main extends PApplet {
                 float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationX);
                 //spotLight(255, 255, 255, (player.getPositionX() - player.ballSize) * 20f, -100f, (player.getPositionZ() - player.ballSize) * 20f, (player.getPositionX() - player.ballSize) * 20f, 0f, (player.getPositionZ() - player.ballSize) * 20f, PI/2, 2);
 
+                ambientLight(50, 50, 50);
+                pointLight(255, 255, 255, (player.getPositionX() - player.ballSize) * 20f, -20.0f * 20f, (player.getPositionZ() - player.ballSize) * 20f);
+
                 camera((player.getPositionX() - player.ballSize) * 20f, heightCam, (player.getPositionZ() - player.ballSize) * 20f, centerPosX, centerPosY, centerPosZ, 0.0f, 1.0f, 0.0f);
                 break;
             case thirdPerson:
                 break;
             case birdView:
                 ambientLight(50, 50, 50);
+                stroke(0, 250, 0);
                 //spotLight(255, 255, 255, 250f, -250f, 250f, 0, 1, 0, PI/2, 2);
-                pointLight(255, 255, 255, player.getPositionX(), -50.0f, player.getPositionZ());
-                camera(player.getPositionX(), -200.0f, player.getPositionZ() + 50, player.getPositionX(), 0.0f, player.getPositionZ(), 0.0f, 1.0f, 0.0f);
+                pointLight(255, 255, 255, (player.getPositionX() - player.ballSize), -20.0f, (player.getPositionZ() - player.ballSize));
+                camera((player.getPositionX() - player.ballSize), -200.0f, (player.getPositionZ() - player.ballSize) + 50, (player.getPositionX() - player.ballSize), 0.0f, (player.getPositionZ() - player.ballSize), 0.0f, 1.0f, 0.0f);
                 break;
         }
 
