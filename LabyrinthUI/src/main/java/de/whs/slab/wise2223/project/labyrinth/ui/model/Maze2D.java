@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import java.util.ArrayList;
 
 public class Maze2D implements IMaze {
-    private PApplet parentProcessing;
+    private final PApplet parentProcessing;
     protected Coordinate start;
     protected Coordinate end;
     protected int sizeHeight;
@@ -89,5 +89,9 @@ public class Maze2D implements IMaze {
             parentProcessing.fill(0, 120, 255);
             parentProcessing.rect(end.getX() * cellSize, end.getY() * cellSize, cellSize, cellSize);
         }
+    }
+
+    protected ArrayList<ArrayList<Boolean>> GetVisibleCells(Coordinate position) {
+        return null;
     }
 }

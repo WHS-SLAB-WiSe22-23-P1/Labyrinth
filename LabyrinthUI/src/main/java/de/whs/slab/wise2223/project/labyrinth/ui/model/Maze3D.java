@@ -2,6 +2,8 @@ package de.whs.slab.wise2223.project.labyrinth.ui.model;
 
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PImage;
 
 public class Maze3D extends Maze2D {
     private PApplet parentProcessing;
@@ -19,11 +21,14 @@ public class Maze3D extends Maze2D {
             scale = 20f;
         }
 
+        parentProcessing.noStroke();
         parentProcessing.pushMatrix();
-        parentProcessing.translate(sizeWidth * cellSize / 2 * scale, cellSize / 2 * scale, sizeHeight * cellSize / 2 * scale);
-        parentProcessing.fill(128,128,128);
-        parentProcessing.box(sizeWidth * cellSize * scale, 0.5f, sizeHeight * cellSize * scale);
+        parentProcessing.translate(-50f, 0 ,-50f);
+        PImage pimage = parentProcessing.loadImage("./Textures/Stone.png",  "png");
+        parentProcessing.texture(pimage);
+        parentProcessing.box(100);
         parentProcessing.popMatrix();
+
 
         for (int y = 0; y < grid.size(); y++) {
             for (int x = 0; x < grid.get(y).size(); x++) {
@@ -32,7 +37,16 @@ public class Maze3D extends Maze2D {
                     parentProcessing.fill(153);
                     parentProcessing.pushMatrix();
                     //parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
-                    parentProcessing.translate(x * cellSize * scale,0 ,  y * cellSize * scale);
+                    parentProcessing.translate(x * cellSize * scale,0 , y * cellSize * scale);
+                    parentProcessing.box(cellSize * scale);
+                    parentProcessing.popMatrix();
+                }
+                else {
+                    parentProcessing.noStroke();
+                    parentProcessing.fill(153);
+                    parentProcessing.pushMatrix();
+                    //parentProcessing.rect(offSetX + x * cellSize, offSetY + y * cellSize, cellSize, cellSize);
+                    parentProcessing.translate(x * cellSize * scale,cellSize * scale, y * cellSize * scale);
                     parentProcessing.box(cellSize * scale);
                     parentProcessing.popMatrix();
                 }
