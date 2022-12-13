@@ -51,12 +51,12 @@ public class Main extends PApplet {
         size(800, 600, P3D);
         //fullScreen();
         currentlyPressed = new ArrayList<Integer>();
-        PImage stoneFloor = loadImage("./Textures/StoneFloor.png",  "png");
+        PImage floor = loadImage("./Textures/SandFloor.png",  "png");
         PImage stoneWall = loadImage("./Textures/StoneWall.png", "png");
 
         PImage skyBox = loadImage("./Textures/SkyBox.png", "png");
 
-        maze.setImages(stoneFloor, stoneWall);
+        maze.setImages(floor, stoneWall);
         maze.fillMaze(levelProvider.getLevel());
         player.SetImages(skyBox);
         player.setPosition(maze.getStart());
