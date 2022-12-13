@@ -10,6 +10,7 @@ import processing.core.PImage;
 import processing.event.KeyEvent;
 
 import javax.swing.*;
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -81,9 +82,9 @@ public class Main extends PApplet {
 
         switch (mode3D) {
             case firstPerson:
-                float centerPosX = (player.getPositionX() - player.ballSize) * 20f + 1f * (float)Math.cos(player.rotationX);
+                float centerPosX = (player.getPositionX() - player.ballSize) * 20f + 1f * (float)Math.cos(player.rotationY);
                 float centerPosY = heightCam;//player.getPositionX() + 1f * (float)Math.cos(player.rotationX);
-                float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationX);
+                float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationY);
                 //spotLight(255, 255, 255, (player.getPositionX() - player.ballSize) * 20f, -100f, (player.getPositionZ() - player.ballSize) * 20f, (player.getPositionX() - player.ballSize) * 20f, 0f, (player.getPositionZ() - player.ballSize) * 20f, PI/2, 2);
 
                 ambientLight(50, 50, 50);
@@ -146,8 +147,8 @@ public class Main extends PApplet {
 
     @Override
     public void mouseMoved() {
-        float cameraRotateX = (mouseX - pmouseX) * TWO_PI / width;
-        float cameraRotateY = (pmouseY - mouseY) * TWO_PI / height;
+        float cameraRotateY = (mouseX - pmouseX) * TWO_PI / width;
+        float cameraRotateX = (pmouseY - mouseY) * TWO_PI / height;
         player.rotatePlayer(cameraRotateX, cameraRotateY);
     }
 }
