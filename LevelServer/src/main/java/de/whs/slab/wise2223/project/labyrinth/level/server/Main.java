@@ -2,6 +2,7 @@ package de.whs.slab.wise2223.project.labyrinth.level.server;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import de.whs.slab.wise2223.project.labyrinth.level.server.controllers.GenerateLevelController;
 import de.whs.slab.wise2223.project.labyrinth.level.server.controllers.LevelController;
 
 import java.io.BufferedReader;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -27,28 +29,23 @@ public class Main {
         server.start();
     }
 
-    public static HttpHandler forMethod(Map<String, HttpHandler> handlers) {
-        return exchange -> {
-            final String method = exchange.getRequestMethod();
-            if (!handlers.containsKey(method)) {
-                exchange.sendResponseHeaders(405, 0);
-                exchange.close();
-                return;
+    private void initRoutes() {
+        final Controller root = new Controller(new LevelController("jdbc:mysql://localhost:3306/slab", "slab", "bals", new GenerateLevelController())) {
+            @Override
+            public String getPath() {
+                return "/";
             }
 
-            handlers.get(method).handle(exchange);
+            @Override
+            public Map<String, HttpHandler> getMethods() {
+                return new HashMap<>();
+            }
         };
-    }
 
-    private void initRoutes() {
-        final Controller[] controllers = new Controller[]{new LevelController()};
-
-        for (final Controller controller : controllers) {
-            httpServer.createContext(controller.getPath(), exchange -> {
-                System.out.printf("%s with %s%n", exchange.getRequestURI().getPath(), exchange.getRequestMethod());
-                forMethod(controller.getMethods()).handle(exchange);
-            });
-        }
+        httpServer.createContext(root.getPath(), exchange -> {
+            System.out.printf("%s with %s%n", exchange.getRequestURI().getPath(), exchange.getRequestMethod());
+            root.forChildren().handle(exchange);
+        });
 
     }
 
