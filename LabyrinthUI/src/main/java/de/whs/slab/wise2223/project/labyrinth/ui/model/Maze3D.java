@@ -8,6 +8,7 @@ public class Maze3D extends Maze2D {
     private PImage pimageStone;
     private PImage pimageStoneFloor;
     private PImage pimageStoneWall;
+    private PImage pimageFinishFlag;
 
     public Maze3D(PApplet parentProcessing) {
         super(null);
@@ -15,9 +16,10 @@ public class Maze3D extends Maze2D {
         this.cellSize = 25f;
     }
 
-    public void setImages(PImage pimageStoneFloor, PImage pimageStoneWall) {
+    public void setImages(PImage pimageStoneFloor, PImage pimageStoneWall, PImage finishFlag) {
         this.pimageStoneFloor = pimageStoneFloor;
         this.pimageStoneWall = pimageStoneWall;
+        this.pimageFinishFlag = finishFlag;
     }
 
     public void drawMaze(Mode3D mode3D) {
@@ -59,6 +61,8 @@ public class Maze3D extends Maze2D {
         if (end != null) {
             //parentProcessing.fill(0, 120, 255);
             //parentProcessing.rect(end.getX() * cellSize, end.getY() * cellSize, cellSize, cellSize);
+            parentProcessing.noStroke();
+            drawFinish(end.getX() * cellSize * scale,-(cellSize * scale), end.getY() * cellSize * scale, cellSize * scale / 2);
         }
     }
 
@@ -114,6 +118,22 @@ public class Maze3D extends Maze2D {
 
         parentProcessing.beginShape(parentProcessing.QUADS);
         parentProcessing.texture(pimageStoneFloor);
+
+        // -Y "top" face
+        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, xSizeOfTexture, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfTexture, ySizeOfTexture);
+        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfTexture);
+
+        parentProcessing.endShape();
+    }
+
+    private void drawFinish(float x, float y, float z, float size) {
+        float xSizeOfTexture = 1024;
+        float ySizeOfTexture = 1024;
+
+        parentProcessing.beginShape(parentProcessing.QUADS);
+        parentProcessing.texture(pimageFinishFlag);
 
         // -Y "top" face
         parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);

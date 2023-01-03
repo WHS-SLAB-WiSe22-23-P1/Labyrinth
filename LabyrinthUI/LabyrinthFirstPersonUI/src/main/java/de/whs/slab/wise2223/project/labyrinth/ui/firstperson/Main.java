@@ -67,8 +67,9 @@ public class Main extends PApplet {
         PImage stoneWall = loadImage("./Textures/StoneWall.png", "png");
 
         PImage skyBox = loadImage("./Textures/SkyBox.png", "png");
+        PImage finishFlag = loadImage("./Textures/FinishFlag.png", "png");
 
-        maze.setImages(floor, stoneWall);
+        maze.setImages(floor, stoneWall, finishFlag);
         maze.fillMaze(levelProvider.getLevel());
         player.SetImages(skyBox);
         player.setPosition(maze.getStart());
