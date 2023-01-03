@@ -57,6 +57,18 @@ public class Player3D extends Player2D{
     public void rotatePlayer(float newRotationX, float newRotationY) {
         rotationX += newRotationX;
         rotationY += newRotationY;
+        if (rotationY > (float)PI*2) {
+            rotationY -= (float)PI*2;
+        } else if (rotationY < 0f) {
+            rotationY += (float)PI*2;
+        }
+
+        if (rotationX < -(float)PI*2) {
+            rotationX += (float)PI*2;
+        } else if (rotationX > 0f) {
+            rotationX -= (float)PI*2;
+        }
+
         rotationY = constrain(rotationY, 0f, (float)PI*2);
         rotationX = constrain(rotationX, (float)-PI/2, 0f);
     }
