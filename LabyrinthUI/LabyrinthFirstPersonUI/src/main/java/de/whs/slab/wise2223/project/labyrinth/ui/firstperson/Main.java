@@ -8,8 +8,12 @@ import de.whs.slab.wise2223.project.labyrinth.ui.model.Player3D;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
+import java.awt.Robot;
+import java.awt.Rectangle;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ public class Main extends PApplet {
     private Mode3D mode3D = Mode3D.birdView;
 
     private float heightCam = 10f;
+    private Robot robot;
 
     public Main(LevelProvider levelProvider) {
         this.levelProvider = levelProvider;
@@ -50,20 +55,28 @@ public class Main extends PApplet {
     public void settings() {
         size(800, 600, P3D);
         //fullScreen();
+
+        try {
+            robot = new Robot();
+        }
+        catch (Throwable e) {
+        }
+
         currentlyPressed = new ArrayList<Integer>();
         PImage floor = loadImage("./Textures/SandFloor.png",  "png");
         PImage stoneWall = loadImage("./Textures/StoneWall.png", "png");
 
         PImage skyBox = loadImage("./Textures/SkyBox.png", "png");
+        PImage finishFlag = loadImage("./Textures/FinishFlag.png", "png");
 
-        maze.setImages(floor, stoneWall);
+        maze.setImages(floor, stoneWall, finishFlag);
         maze.fillMaze(levelProvider.getLevel());
         player.SetImages(skyBox);
         player.setPosition(maze.getStart());
     }
 
     public void draw() {
-        background(204);
+        background(0);
 
         stroke(250, 0, 0);
         strokeWeight(10);
@@ -81,9 +94,9 @@ public class Main extends PApplet {
 
         switch (mode3D) {
             case firstPerson:
-                float centerPosX = (player.getPositionX() - player.ballSize) * 20f + 1f * (float)Math.cos(player.rotationX);
+                float centerPosX = (player.getPositionX() - player.ballSize) * 20f + 1f * (float)Math.cos(player.rotationY);
                 float centerPosY = heightCam;//player.getPositionX() + 1f * (float)Math.cos(player.rotationX);
-                float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationX);
+                float centerPosZ = (player.getPositionZ() - player.ballSize) * 20f + 1f * (float)Math.sin(player.rotationY);
                 //spotLight(255, 255, 255, (player.getPositionX() - player.ballSize) * 20f, -100f, (player.getPositionZ() - player.ballSize) * 20f, (player.getPositionX() - player.ballSize) * 20f, 0f, (player.getPositionZ() - player.ballSize) * 20f, PI/2, 2);
 
                 ambientLight(50, 50, 50);
@@ -144,10 +157,23 @@ public class Main extends PApplet {
         }
     }
 
+    private boolean shouldMove = true;
+    private int offsetX = 0;
+    private int offsetY = 0;
+
     @Override
     public void mouseMoved() {
-        float cameraRotateX = (mouseX - pmouseX) * TWO_PI / width;
-        float cameraRotateY = (pmouseY - mouseY) * TWO_PI / height;
+        float cameraRotateY = (mouseX - pmouseX + offsetX) * TWO_PI / width;
+        float cameraRotateX = (pmouseY - mouseY) * TWO_PI / height;
         player.rotatePlayer(cameraRotateX, cameraRotateY);
+
+        offsetX = mouseX - (width/2);
+        robot.mouseMove(windowX + width/2, windowY + height/2);
+
+
+        //robot.mouseMove(200, 200);
+
+
+
     }
 }

@@ -57,7 +57,20 @@ public class Player3D extends Player2D{
     public void rotatePlayer(float newRotationX, float newRotationY) {
         rotationX += newRotationX;
         rotationY += newRotationY;
-        rotationY = constrain(rotationY, (float)-PI/2, 0f);
+        if (rotationY > (float)PI*2) {
+            rotationY -= (float)PI*2;
+        } else if (rotationY < 0f) {
+            rotationY += (float)PI*2;
+        }
+
+        if (rotationX < -(float)PI*2) {
+            rotationX += (float)PI*2;
+        } else if (rotationX > 0f) {
+            rotationX -= (float)PI*2;
+        }
+
+        rotationY = constrain(rotationY, 0f, (float)PI*2);
+        rotationX = constrain(rotationX, (float)-PI/2, 0f);
     }
 
     public void movePlayer(ArrayList<Integer> currentlyPressed, Mode3D mode3D) {
@@ -75,62 +88,100 @@ public class Player3D extends Player2D{
 
     private void movePlayerFirstPerson(ArrayList<Integer> currentlyPressed) {
         float speed = 0.5f;
-        float cellSize = maze.getCellSize();
-        Coordinate playerCords = new Coordinate((int)(positionX / maze.cellSize), (int)(positionY / maze.cellSize));
         for (int i = 0; i < currentlyPressed.size(); i++) {
+            float direction = 0;
+
             switch (currentlyPressed.get(i)) {
                 case 87:
                     // W
-                    Coordinate boxCordsTopLeft = playerCords.top().left();
-                    Coordinate boxCordsTop = playerCords.top();
-                    Coordinate boxCordsTopRight = playerCords.top().right();
-
-                    if (!((maze.getCell(boxCordsTopLeft) == 0 && CollisionHelper.collideBallWithWall(boxCordsTopLeft, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsTop) == 0 && CollisionHelper.collideBallWithWall(boxCordsTop, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsTopRight) == 0 && CollisionHelper.collideBallWithWall(boxCordsTopRight, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
-                        positionY -= speed;
-                    }
+                    direction = rotationY;
                     break;
                 case 83:
                     // S
-                    Coordinate boxCordsBottomLeft = playerCords.bottom().left();
-                    Coordinate boxCordsBottom = playerCords.bottom();
-                    Coordinate boxCordsBottomRight = playerCords.bottom().right();
-
-                    if (!((maze.getCell(boxCordsBottomLeft) == 0 && CollisionHelper.collideBallWithWall(boxCordsBottomLeft, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsBottom) == 0 && CollisionHelper.collideBallWithWall(boxCordsBottom, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsBottomRight) == 0 && CollisionHelper.collideBallWithWall(boxCordsBottomRight, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
-                        positionY += speed;
-                    }
+                    direction = rotationY + (float)PI;
                     break;
                 case 65:
                     // A
-                    Coordinate boxCordsLeftTop = playerCords.left().top();
-                    Coordinate boxCordsLeft = playerCords.left();
-                    Coordinate boxCordsLeftBottom = playerCords.left().bottom();
-
-                    if (!((maze.getCell(boxCordsLeftTop) == 0 && CollisionHelper.collideBallWithWall(boxCordsLeftTop, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsLeft) == 0 && CollisionHelper.collideBallWithWall(boxCordsLeft, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsLeftBottom) == 0 && CollisionHelper.collideBallWithWall(boxCordsLeftBottom, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
-                        positionX -= speed;
-                    }
+                    direction = rotationY + 1.5f * (float)PI;
                     break;
                 case 68:
                     // D
-                    Coordinate boxCordsRightTop = playerCords.right().top();
-                    Coordinate boxCordsRight = playerCords.right();
-                    Coordinate boxCordsRightBottom = playerCords.right().bottom();
-
-                    if (!((maze.getCell(boxCordsRightTop) == 0 && CollisionHelper.collideBallWithWall(boxCordsRightTop, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsRight) == 0 && CollisionHelper.collideBallWithWall(boxCordsRight, cellSize, positionX, positionY, (ballSize / 2) + speed)) ||
-                            (maze.getCell(boxCordsRightBottom) == 0 && CollisionHelper.collideBallWithWall(boxCordsRightBottom, cellSize, positionX, positionY, (ballSize / 2) + speed)))) {
-                        positionX += speed;
-                    }
+                    direction = rotationY + 0.5f * (float) PI;
                     break;
                 default:
+                    continue;
+            }
+
+            if (direction > 2 * PI) {
+                direction = direction - 2 * (float)PI;
+            } else if (direction < 0) {
+                direction = direction + 2 * (float)PI;
+            }
+
+            if (checkCollision(direction, speed)) {
+                positionX = getPositionX() + speed * (float)Math.cos(direction);
+                positionY = getPositionZ() + speed * (float)Math.sin(direction);
             }
         }
     }
+
+    private Boolean checkCollision( float direction, float speed) {
+        float cellSize = maze.getCellSize();
+        Coordinate playerCords = new Coordinate((int)(positionX / maze.cellSize), (int)(positionY / maze.cellSize));
+
+        ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
+
+        if (direction >= PI/4 && direction < PI/2) {
+            coords.add(playerCords.bottom().left());
+            coords.add(playerCords.bottom());
+            coords.add(playerCords.bottom().right());
+            coords.add(playerCords.right());
+
+        } else if (direction >= 0 && direction < PI/4) {
+            coords.add(playerCords.bottom());
+            coords.add(playerCords.right().bottom());
+            coords.add(playerCords.right());
+            coords.add(playerCords.right().top());
+        } else if (direction >= 7 * PI/4 && direction < 2 * PI) {
+            coords.add(playerCords.right().bottom());
+            coords.add(playerCords.right());
+            coords.add(playerCords.right().top());
+            coords.add(playerCords.top());
+        } else if (direction >= 3 * PI/2 && direction < 7 * PI/4) {
+            coords.add(playerCords.right());
+            coords.add(playerCords.top().left());
+            coords.add(playerCords.top());
+            coords.add(playerCords.top().right());
+        } else if (direction >= 5 * PI/4 && direction < 3 * PI/2) {
+            coords.add(playerCords.left());
+            coords.add(playerCords.top().left());
+            coords.add(playerCords.top());
+            coords.add(playerCords.top().right());
+        } else if (direction >= PI && direction < 5 * PI/4) {
+            coords.add(playerCords.left().bottom());
+            coords.add(playerCords.left());
+            coords.add(playerCords.left().top());
+            coords.add(playerCords.top());
+        } else if (direction >= 3 * PI / 4 && direction < PI) {
+            coords.add(playerCords.left().bottom());
+            coords.add(playerCords.left());
+            coords.add(playerCords.left().top());
+            coords.add(playerCords.bottom());
+        } else if (direction >= PI/2 && direction <= 3 * PI / 4) {
+            coords.add(playerCords.bottom().left());
+            coords.add(playerCords.bottom());
+            coords.add(playerCords.bottom().right());
+            coords.add(playerCords.left());
+        }
+
+        for (Coordinate cord : coords) {
+            if (maze.getCell(cord) == 0 && CollisionHelper.collideBallWithWall(cord, cellSize, positionX, positionY, (ballSize / 2) + speed)) {
+                //return false;
+            }
+        }
+        return true;
+    }
+
     private void movePlayerBird(ArrayList<Integer> currentlyPressed) {
         float speed = 1f;
         float cellSize = maze.getCellSize();
