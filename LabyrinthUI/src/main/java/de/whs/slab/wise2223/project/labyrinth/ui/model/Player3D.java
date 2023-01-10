@@ -176,7 +176,7 @@ public class Player3D extends Player2D{
 
         for (Coordinate cord : coords) {
             if (maze.getCell(cord) == 0 && CollisionHelper.collideBallWithWall(cord, cellSize, positionX, positionY, (ballSize / 2) + speed)) {
-                //return false;
+                return false;
             }
         }
         return true;

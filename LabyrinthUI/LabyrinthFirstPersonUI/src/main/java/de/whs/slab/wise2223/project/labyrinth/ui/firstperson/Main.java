@@ -77,6 +77,7 @@ public class Main extends PApplet {
 
     public void draw() {
         background(0);
+        noCursor();
 
         stroke(250, 0, 0);
         strokeWeight(10);
