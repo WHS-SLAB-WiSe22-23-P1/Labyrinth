@@ -1,5 +1,6 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.model;
 
+import de.whs.slab.wise2223.project.labyrinth.model.Coordinate;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -63,6 +64,57 @@ public class Maze3D extends Maze2D {
             //parentProcessing.rect(end.getX() * cellSize, end.getY() * cellSize, cellSize, cellSize);
             parentProcessing.noStroke();
             drawFinish(end.getX() * cellSize * scale,-(cellSize * scale), end.getY() * cellSize * scale, cellSize * scale / 2);
+        }
+    }
+
+    public void drawOutsideBox(float x, float y, float z) {
+        float size = cellSize / 2;
+
+        float xSizeOfWallTexture = 1024;
+        float ySizeOfWallTexture = 1024;
+
+        parentProcessing.beginShape(parentProcessing.QUADS);
+        parentProcessing.texture(pimageStoneWall);
+
+        // -Y "top" face
+        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, xSizeOfWallTexture, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
+        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfWallTexture);
+
+        parentProcessing.endShape();
+    }
+
+    private void drawOutsideBoxes(Coordinate start, Coordinate end) {
+        for (int y = start.getY(); y < end.getY(); y++) {
+            for (int x = start.getX(); x < end.getX(); x++) {
+                drawOutsideBox(x * cellSize,0 , y * cellSize);
+            }
+        }
+    }
+
+    public void drawOutside(Coordinate playerCords) {
+        int layers = 5;
+
+        parentProcessing.noStroke();
+        if (playerCords.getX() < sizeWidth / 2) {
+            drawOutsideBoxes(new Coordinate(-layers, 0), new Coordinate(0, sizeHeight));
+            if (playerCords.getY() < sizeHeight / 2) {
+                drawOutsideBoxes(new Coordinate(0, -layers), new Coordinate(sizeWidth, 0));
+                drawOutsideBoxes(new Coordinate(-layers, -layers), new Coordinate(0, 0));
+            } else {
+                drawOutsideBoxes(new Coordinate(0, sizeHeight), new Coordinate(sizeWidth, layers + sizeHeight));
+                drawOutsideBoxes(new Coordinate(-layers, sizeHeight), new Coordinate(0, layers + sizeHeight));
+            }
+        } else {
+            drawOutsideBoxes(new Coordinate(sizeWidth, 0), new Coordinate(layers + sizeWidth, sizeHeight));
+            if (playerCords.getY() < sizeHeight / 2) {
+                drawOutsideBoxes(new Coordinate(0, -layers), new Coordinate(sizeWidth, 0));
+                drawOutsideBoxes(new Coordinate(sizeWidth, -layers), new Coordinate(sizeWidth + layers, 0));
+            } else {
+                drawOutsideBoxes(new Coordinate(0, sizeHeight), new Coordinate(sizeWidth, layers + sizeHeight));
+                drawOutsideBoxes(new Coordinate(sizeWidth, sizeHeight), new Coordinate(sizeWidth + layers, layers + sizeHeight));
+            }
         }
     }
 

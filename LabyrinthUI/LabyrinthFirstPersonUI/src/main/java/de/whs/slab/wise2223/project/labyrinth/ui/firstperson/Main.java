@@ -8,12 +8,9 @@ import de.whs.slab.wise2223.project.labyrinth.ui.model.Player3D;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
-import java.awt.Robot;
-import java.awt.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Console;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -77,7 +74,6 @@ public class Main extends PApplet {
 
     public void draw() {
         background(0);
-        noCursor();
 
         stroke(250, 0, 0);
         strokeWeight(10);
@@ -113,6 +109,8 @@ public class Main extends PApplet {
                 //spotLight(255, 255, 255, 250f, -250f, 250f, 0, 1, 0, PI/2, 2);
                 pointLight(255, 255, 255, (player.getPositionX() - player.ballSize), -20.0f, (player.getPositionZ() - player.ballSize));
                 camera((player.getPositionX() - player.ballSize), -200.0f, (player.getPositionZ() - player.ballSize) + 50, (player.getPositionX() - player.ballSize), 0.0f, (player.getPositionZ() - player.ballSize), 0.0f, 1.0f, 0.0f);
+
+                maze.drawOutside(player.getCords());
                 break;
         }
 
@@ -151,9 +149,11 @@ public class Main extends PApplet {
         if (event.getKey() == 't' || event.getKey() == 'T') {
             if (mode3D == Mode3D.birdView) {
                 mode3D = Mode3D.firstPerson;
+                noCursor();
             }
             else {
                 mode3D = Mode3D.birdView;
+                cursor();
             }
         }
     }
@@ -164,17 +164,13 @@ public class Main extends PApplet {
 
     @Override
     public void mouseMoved() {
-        float cameraRotateY = (mouseX - pmouseX + offsetX) * TWO_PI / width;
-        float cameraRotateX = (pmouseY - mouseY) * TWO_PI / height;
-        player.rotatePlayer(cameraRotateX, cameraRotateY);
+         if (mode3D == Mode3D.firstPerson) {
+            float cameraRotateY = (mouseX - pmouseX + offsetX) * TWO_PI / width;
+            float cameraRotateX = (pmouseY - mouseY) * TWO_PI / height;
+            player.rotatePlayer(cameraRotateX, cameraRotateY);
 
-        offsetX = mouseX - (width/2);
-        robot.mouseMove(windowX + width/2, windowY + height/2);
-
-
-        //robot.mouseMove(200, 200);
-
-
-
+            offsetX = mouseX - (width / 2);
+            robot.mouseMove(windowX + width / 2, windowY + height / 2);
+        }
     }
 }
