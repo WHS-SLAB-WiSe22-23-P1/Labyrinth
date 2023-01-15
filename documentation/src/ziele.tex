@@ -3,7 +3,7 @@
 
 Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oct15/labyrinths.html}} fasziniert das Labyrinth, der Irrgarten bzw. Maze den Menschen. Dieser Faszination wir sind auch nachgegangen und untersuchten das Erstellen von Labyrinthen sowie die visuelle Darstellung. Auch haben wir Algorithmen zum Lösen von Labyrinthen untersucht. Unzählige Prototypen, meist mit p5js\footnote{\url{https://p5js.org}}(einer Portierung von Processing\footnote{\url{https://processing.org}}  mit Java nach Javascript)  wurden erstellt bzw.  vorhandene Quellen untersucht.
 
-	Wir standen vor der Entscheidung Processing nativ zu verwenden, mit eingeschränkter Entwicklungsumgebung Processing Development Environment (PDE)\footnote{\url{https://processing.org/environment}},  oder zu versuchen Processing in Java\footnote{\url{https://happycoding.io/tutorials/java/processing-in-java}}, wie ein Framework, in einer gängigen Entwicklungsumgebung zu nutzen. Und haben uns für die Nutzung von Processing als Framework mit der beliebten Java IDE Intellj von jetbrain entschieden. So gestaltet sich die Entwicklung leichter und wir konnten Maven als buildtool und git zur Versionsverwaltung leicht einsetzen. Wir starteten mit einer alten Processing Version 3.5.4 weil sie als einzige im Maven Repository zu finden war. 
+	Wir standen vor der Entscheidung Processing nativ zu verwenden, mit eingeschränkter Entwicklungsumgebung Processing Development Environment (PDE)\footnote{\url{https://processing.org/environment}},  oder zu versuchen Processing in Java\footnote{\url{https://happycoding.io/tutorials/java/processing-in-java}}, wie ein Framework, in einer gängigen Entwicklungsumgebung zu nutzen. Und haben uns für die Nutzung von Processing als Framework mit der beliebten Java IDE IntelliJ von JetBrains entschieden. So gestaltet sich die Entwicklung leichter und wir konnten Maven als buildtool und git zur Versionsverwaltung leicht einsetzen. Wir starteten mit einer alten Processing Version 3.5.4 weil sie als einzige im Maven Repository zu finden war. 
 
 	Dieses unterstütze 3D open GL nicht korrekt auf mac os mit Apple silicon. Später konnten wir auf eine aktuelle Processing Version 4.1.1 wechseln. Auch diese war nicht perfekt gepackt im Maven Repository. Das haben wir in dann zu Fuß selber gemacht. Wir stießen auf fehlerhafte Einstellungen in IntelliJ für Maven Projekte in der mac os Version. Und konnten auch dieses lösen.
 
@@ -25,7 +25,7 @@ Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oc
     \subsubsection*{Labyrinth wird generiert mit Java}
 		Nachdem wir die Minimum-Ziele definiert und ausformuliert haben mussten wir uns auch zwangsweise mit der Frage beschäftigen welche Tools wir zur Arbeit am Projekt benutzen wollen.
 		
-		Detaillierte Infos zu den verwendeten Tools befinden sich im Abschnitt 2. / "Tooling".
+		Detaillierte Infos zu den verwendeten Tools befinden sich im Abschnitt 2. / ''Tooling''.
 		
 		Warum dieser Zusatz zu dem bereits definierten Milestone der Labyrinthgenerierung jedoch wichtig war ergibt sich aus unserer Entscheidung den Algorithmus Processing unabhängig zu bauen. Daraus folgte das wir eine Datenstruktur(Output) in Java generieren welche wir dann an Processing übergeben. Die Daten können dann innerhalb der Processing-Umgebung vom Frontend Team weiterverwendet werden und somit auch graphisch dargestellt werden.
 		  
@@ -48,7 +48,7 @@ Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oc
 
 
     \subsubsection*{Bewegen durch das Labyrinth}
-        Das Bewegen durch das Labyrinth war eines der wichtigsten Features in Bezug darauf unser Projekt als tatsächliches "Spiel" zu bezeichnen. Das Feature impliziert neben dem reinen bewegen durch, auch die Möglichkeit zum beenden des Labyrinthes und hat unser MVP von der reinen Darstellung um grundlegende Interaktionen mit dem Labyrinth erweitert.
+        Das Bewegen durch das Labyrinth war eines der wichtigsten Features in Bezug darauf unser Projekt als tatsächliches ''Spiel'' zu bezeichnen. Das Feature impliziert neben dem reinen bewegen durch, auch die Möglichkeit zum beenden des Labyrinthes und hat unser MVP von der reinen Darstellung um grundlegende Interaktionen mit dem Labyrinth erweitert.
 
     \subsubsection*{First Person}
         Basierend auf den zwei zuvor Vorgestellten Features ist die First Person Ansicht der letzte Milestone, welchen wir nach dem MVP noch implementiert haben. 
@@ -62,9 +62,9 @@ Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oc
 
 
     \subsubsection*{Level Editor}
-        Der Level-Editor war eines unserer "advanced" Features und war die nächste Stufe der Generierungsvarianten. Dementsprechend sollte der Editor das erste große Feature sein mit welchem auch Endnutzer des Projekts eigene Level generieren und darstellen können. 
+        Der Level-Editor war eines unserer ''advanced'' Features und war die nächste Stufe der Generierungsvarianten. Dementsprechend sollte der Editor das erste große Feature sein mit welchem auch Endnutzer des Projekts eigene Level generieren und darstellen können. 
         
-        Grundlage hierfür war das obige Feature bezüglich der Varianten (siehe "Varianten der Generierung" für Details) und genauso wie das vorherige Feature hat es auch der Editor nicht ins fertige Produkt geschafft. 
+        Grundlage hierfür war das obige Feature bezüglich der Varianten (siehe ''Varianten der Generierung'' für Details) und genauso wie das vorherige Feature hat es auch der Editor nicht ins fertige Produkt geschafft. 
 
 
     \subsubsection*{P5JS}
