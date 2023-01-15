@@ -1,7 +1,8 @@
 package de.whs.slab.wise2223.project.labyrinth.ui.firstperson;
 
+import de.whs.slab.wise2223.project.labyrinth.level.generator.RandomisedDepthFirstSearchLevelProvider;
+import de.whs.slab.wise2223.project.labyrinth.model.Dimensions;
 import de.whs.slab.wise2223.project.labyrinth.model.LevelProvider;
-import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze3D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Mode3D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player3D;
@@ -9,10 +10,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,7 +18,7 @@ public class Main extends PApplet {
     public Maze3D maze;
     public Player3D player;
     private ArrayList<Integer> currentlyPressed;;
-    private final LevelProvider levelProvider;
+    private LevelProvider levelProvider;
     private Boolean finished = false;
     private Mode3D mode3D = Mode3D.birdView;
 
@@ -33,13 +31,17 @@ public class Main extends PApplet {
 
     public static void main(String[] args) {
         LevelProvider level = null;
-        try {
-            if (args.length != 1) throw new FileNotFoundException();
 
-            level = new StreamLevelProvider(new FileInputStream(args[0]));
-        } catch (FileNotFoundException e) {
-            level = new StreamLevelProvider(System.in);
-        }
+        //try {
+        //    if (args.length != 1) throw new FileNotFoundException();
+
+        //    level = new StreamLevelProvider(new FileInputStream(args[0]));
+        //} catch (FileNotFoundException e) {
+        //    level = new StreamLevelProvider(System.in);
+        //}
+
+        level = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(3, 3));
+
         Main newMain = new de.whs.slab.wise2223.project.labyrinth.ui.firstperson.Main(level);
 
         //Give the maze the reference to this, so it can draw
@@ -121,11 +123,46 @@ public class Main extends PApplet {
         checkForWin();
     }
 
+    protected void restartLevel() {
+        this.levelProvider = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(3, 3));
+
+        //Give the maze the reference to this, so it can draw
+        maze = new Maze3D(this);
+        player = new Player3D(this, this.maze);
+        finished = false;
+        //mode3D = Mode3D.birdView;
+
+        PImage floor = loadImage("./Textures/SandFloor.png",  "png");
+        PImage stoneWall = loadImage("./Textures/StoneWall.png", "png");
+
+        PImage skyBox = loadImage("./Textures/SkyBox.png", "png");
+        PImage finishFlag = loadImage("./Textures/FinishFlag.png", "png");
+
+        maze.setImages(floor, stoneWall, finishFlag);
+        maze.fillMaze(levelProvider.getLevel());
+        player.SetImages(skyBox);
+        player.setPosition(maze.getStart());
+    }
+
     public void checkForWin() {
         if (!finished && player.getCords().getX() == maze.getEnd().getX() && player.getCords().getY() == maze.getEnd().getY()) {
             finished = true;
-            JOptionPane.showConfirmDialog(null,
-                    "Yes you did!", "You win!", JOptionPane.CLOSED_OPTION);
+            mode3D = Mode3D.birdView;
+            currentlyPressed.clear();
+        } else if (finished) {
+            noLights();
+            background(0);
+            pushMatrix();
+            translate(0, -50,0);
+            rotateY(-0);
+            rotateX(PI / 2);
+            fill(255);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            text("Du hast gewonnen!", player.getPositionX() , player.getPositionZ());
+            textSize(12);
+            text("Drücke R zum Neustarten", player.getPositionX() , player.getPositionZ() + 24);
+            popMatrix();
         }
     }
 
@@ -142,19 +179,23 @@ public class Main extends PApplet {
     public void keyPressed(KeyEvent event) {
         super.keyPressed(event);
 
+        if (!finished) {
         if (!currentlyPressed.contains(event.getKeyCode())) {
             currentlyPressed.add(event.getKeyCode());
         }
+            if (event.getKey() == 't' || event.getKey() == 'T') {
+                if (mode3D == Mode3D.birdView) {
+                    mode3D = Mode3D.firstPerson;
+                    noCursor();
+                } else {
+                    mode3D = Mode3D.birdView;
+                    cursor();
+                }
+            }
+        }
 
-        if (event.getKey() == 't' || event.getKey() == 'T') {
-            if (mode3D == Mode3D.birdView) {
-                mode3D = Mode3D.firstPerson;
-                noCursor();
-            }
-            else {
-                mode3D = Mode3D.birdView;
-                cursor();
-            }
+        if (event.getKey() == 'r' || event.getKey() == 'R') {
+            restartLevel();
         }
     }
 

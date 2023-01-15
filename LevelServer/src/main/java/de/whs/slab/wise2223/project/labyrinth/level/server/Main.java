@@ -2,6 +2,7 @@ package de.whs.slab.wise2223.project.labyrinth.level.server;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import de.whs.slab.wise2223.project.labyrinth.level.generator.RandomisedDepthFirstSearchLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.level.server.controllers.LevelController;
 
 import java.io.BufferedReader;
@@ -18,6 +19,7 @@ public class Main {
     public Main(InetSocketAddress address) throws IOException {
         httpServer = HttpServer.create(address, 0);
         initRoutes();
+        RandomisedDepthFirstSearchLevelProvider
     }
 
 

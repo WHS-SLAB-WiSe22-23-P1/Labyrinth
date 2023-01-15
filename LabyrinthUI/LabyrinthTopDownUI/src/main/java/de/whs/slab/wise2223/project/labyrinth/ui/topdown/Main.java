@@ -5,19 +5,12 @@ import de.whs.slab.wise2223.project.labyrinth.ui.LevelUI;
 import de.whs.slab.wise2223.project.labyrinth.ui.StreamLevelProvider;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Maze2D;
 import de.whs.slab.wise2223.project.labyrinth.ui.model.Player2D;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import processing.core.PApplet;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 import processing.event.KeyEvent;
 
 import javax.swing.*;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,6 +36,8 @@ public class Main extends LevelUI {
 
         new Main(level).startLevel();
     }
+
+    protected void restartLevel() {}
 
     @Override
     public void startLevel() {

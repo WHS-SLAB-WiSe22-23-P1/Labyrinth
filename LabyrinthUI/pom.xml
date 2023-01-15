@@ -24,6 +24,12 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>de.w-hs.slab.wise22-23.project.labyrinth</groupId>
+            <artifactId>de.whs.slab.wise2223.project.labyrinth.level.generator</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
