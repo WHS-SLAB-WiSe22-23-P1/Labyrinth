@@ -37,3 +37,7 @@ replay_pid*
 .idea
 target/
 *.iml
+
+
+**/svg-inkscape/
+*.drawio.bkp
