@@ -23,32 +23,27 @@ public class Maze3D extends Maze2D {
         this.pimageFinishFlag = finishFlag;
     }
 
-    public void drawMaze(Mode3D mode3D) {
+    public void drawMaze(Mode3D mode3D, Coordinate playerCords) {
         float scale = 1f;
+        int viewDistanceX = 12;
+        int viewDistanceY = 6;
 
         if (mode3D == Mode3D.firstPerson) {
             scale = 20f;
+            viewDistanceX = 12;
+            viewDistanceY = 12;
         }
 
-        for (int y = 0; y < grid.size(); y++) {
-            for (int x = 0; x < grid.get(y).size(); x++) {
-                parentProcessing.stroke(0);
+        Coordinate startCorner = new Coordinate(Math.max(playerCords.getX() - viewDistanceX, 0), Math.max(playerCords.getY() - viewDistanceY, 0));
+        Coordinate endCorner = new Coordinate(Math.min(playerCords.getX() + viewDistanceX + 1, sizeWidth), Math.min(playerCords.getY() + viewDistanceY + 1, sizeHeight));
+
+        parentProcessing.noStroke();
+        for (int y = startCorner.getY(); y < endCorner.getY(); y++) {
+            for (int x = startCorner.getX(); x < endCorner.getX(); x++) {
                 if(grid.get(y).get(x) == 0) {
-                    parentProcessing.noStroke();
-                    //parentProcessing.fill(153);
-                    //parentProcessing.pushMatrix();
-                    //parentProcessing.translate(x * cellSize * scale,0 , y * cellSize * scale);
-                    //parentProcessing.box(cellSize * scale);
-                    //parentProcessing.popMatrix();
-                    drawBox(x * cellSize * scale,0 , y * cellSize * scale, cellSize * scale / 2);
+                    drawBox(new Coordinate(x, y), cellSize * scale / 2);
                 }
                 else {
-                    parentProcessing.noStroke();
-                    //parentProcessing.fill(153);
-                    //parentProcessing.pushMatrix();
-                    //parentProcessing.translate(x * cellSize * scale,cellSize * scale, y * cellSize * scale);
-                    //parentProcessing.box(cellSize * scale);
-                    //parentProcessing.popMatrix();
                     drawFloor(x * cellSize * scale,-(cellSize * scale), y * cellSize * scale, cellSize * scale / 2);
                 }
             }
@@ -67,83 +62,32 @@ public class Maze3D extends Maze2D {
         }
     }
 
-    public void drawOutsideBox(float x, float y, float z) {
-        float size = cellSize / 2;
-
+    private void drawBox(Coordinate coordinate, float size) {
         float xSizeOfWallTexture = 1024;
         float ySizeOfWallTexture = 1024;
+
+        float x = coordinate.getX() * size * 2;
+        float y = 0;
+        float z = coordinate.getY() * size * 2;
 
         parentProcessing.beginShape(parentProcessing.QUADS);
         parentProcessing.texture(pimageStoneWall);
 
-        // -Y "top" face
-        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);
-        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, xSizeOfWallTexture, 0);
-        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
-        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfWallTexture);
-
-        parentProcessing.endShape();
-    }
-
-    private void drawOutsideBoxes(Coordinate start, Coordinate end) {
-        for (int y = start.getY(); y < end.getY(); y++) {
-            for (int x = start.getX(); x < end.getX(); x++) {
-                drawOutsideBox(x * cellSize,0 , y * cellSize);
-            }
+        if (getCell(coordinate.bottom()) == 1) {
+            // +Z "front" face
+            parentProcessing.vertex((x) - size, (-y) - size, (z) + size, 0, 0);
+            parentProcessing.vertex((x) + size, (-y) - size, (z) + size, xSizeOfWallTexture, 0);
+            parentProcessing.vertex((x) + size, (-y) + size, (z) + size, xSizeOfWallTexture, ySizeOfWallTexture);
+            parentProcessing.vertex((x) - size, (-y) + size, (z) + size, 0, ySizeOfWallTexture);
         }
-    }
 
-    public void drawOutside(Coordinate playerCords) {
-        int layers = 5;
-
-        parentProcessing.noStroke();
-        if (sizeWidth > 10 && sizeHeight > 10) {
-            if (playerCords.getX() < sizeWidth / 2) {
-                drawOutsideBoxes(new Coordinate(-layers, 0), new Coordinate(0, sizeHeight));
-                if (playerCords.getY() < sizeHeight / 2) {
-                    drawOutsideBoxes(new Coordinate(0, -layers), new Coordinate(sizeWidth, 0));
-                    drawOutsideBoxes(new Coordinate(-layers, -layers), new Coordinate(0, 0));
-                } else {
-                    drawOutsideBoxes(new Coordinate(0, sizeHeight), new Coordinate(sizeWidth, layers + sizeHeight));
-                    drawOutsideBoxes(new Coordinate(-layers, sizeHeight), new Coordinate(0, layers + sizeHeight));
-                }
-            } else {
-                drawOutsideBoxes(new Coordinate(sizeWidth, 0), new Coordinate(layers + sizeWidth, sizeHeight));
-                if (playerCords.getY() < sizeHeight / 2) {
-                    drawOutsideBoxes(new Coordinate(0, -layers), new Coordinate(sizeWidth, 0));
-                    drawOutsideBoxes(new Coordinate(sizeWidth, -layers), new Coordinate(sizeWidth + layers, 0));
-                } else {
-                    drawOutsideBoxes(new Coordinate(0, sizeHeight), new Coordinate(sizeWidth, layers + sizeHeight));
-                    drawOutsideBoxes(new Coordinate(sizeWidth, sizeHeight), new Coordinate(sizeWidth + layers, layers + sizeHeight));
-                }
-            }
+        if (getCell(coordinate.top()) == 1) {
+            // -Z "back" face
+            parentProcessing.vertex((x) + size, (-y) - size, (z) - size, 0, 0);
+            parentProcessing.vertex((x) - size, (-y) - size, (z) - size, xSizeOfWallTexture, 0);
+            parentProcessing.vertex((x) - size, (-y) + size, (z) - size, xSizeOfWallTexture, ySizeOfWallTexture);
+            parentProcessing.vertex((x) + size, (-y) + size, (z) - size, 0, ySizeOfWallTexture);
         }
-        else {
-            drawOutsideBoxes(new Coordinate(0, -layers), new Coordinate(sizeWidth + layers, 0));
-            drawOutsideBoxes(new Coordinate(-layers, -layers), new Coordinate(0, sizeHeight + layers));
-            drawOutsideBoxes(new Coordinate(0, sizeHeight), new Coordinate(sizeWidth + layers, sizeHeight + layers));
-            drawOutsideBoxes(new Coordinate(sizeWidth, 0), new Coordinate(sizeWidth + layers, sizeHeight));
-        }
-    }
-
-    private void drawBox(float x, float y, float z, float size) {
-        float xSizeOfWallTexture = 1024;
-        float ySizeOfWallTexture = 1024;
-
-        parentProcessing.beginShape(parentProcessing.QUADS);
-        parentProcessing.texture(pimageStoneWall);
-
-        // +Z "front" face
-        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, 0);
-        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfWallTexture, 0);
-        parentProcessing.vertex((x)+size, (-y)+size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
-        parentProcessing.vertex((x)-size, (-y)+size, (z)+size, 0, ySizeOfWallTexture);
-
-        // -Z "back" face
-        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, 0, 0);
-        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, xSizeOfWallTexture, 0);
-        parentProcessing.vertex((x)-size, (-y)+size, (z)-size, xSizeOfWallTexture, ySizeOfWallTexture);
-        parentProcessing.vertex((x)+size, (-y)+size, (z)-size, 0, ySizeOfWallTexture);
 
         // +Y "bottom" face
         //parentProcessing.vertex((x)-size, (-y)+size, (z)+size, 0, 0);
@@ -157,17 +101,21 @@ public class Maze3D extends Maze2D {
         parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
         parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfWallTexture);
 
-        // +X "right" face
-        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, 0, 0);
-        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, xSizeOfWallTexture, 0);
-        parentProcessing.vertex((x)+size, (-y)+size, (z)-size, xSizeOfWallTexture, ySizeOfWallTexture);
-        parentProcessing.vertex((x)+size, (-y)+size, (z)+size, 0, ySizeOfWallTexture);
+        if (getCell(coordinate.right()) == 1) {
+            // +X "right" face
+            parentProcessing.vertex((x) + size, (-y) - size, (z) + size, 0, 0);
+            parentProcessing.vertex((x) + size, (-y) - size, (z) - size, xSizeOfWallTexture, 0);
+            parentProcessing.vertex((x) + size, (-y) + size, (z) - size, xSizeOfWallTexture, ySizeOfWallTexture);
+            parentProcessing.vertex((x) + size, (-y) + size, (z) + size, 0, ySizeOfWallTexture);
+        }
 
-        // -X "left" face
-        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);
-        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, xSizeOfWallTexture, 0);
-        parentProcessing.vertex((x)-size, (-y)+size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
-        parentProcessing.vertex((x)-size, (-y)+size, (z)-size, 0, ySizeOfWallTexture);
+        if (getCell(coordinate.left()) == 1) {
+            // -X "left" face
+            parentProcessing.vertex((x) - size, (-y) - size, (z) - size, 0, 0);
+            parentProcessing.vertex((x) - size, (-y) - size, (z) + size, xSizeOfWallTexture, 0);
+            parentProcessing.vertex((x) - size, (-y) + size, (z) + size, xSizeOfWallTexture, ySizeOfWallTexture);
+            parentProcessing.vertex((x) - size, (-y) + size, (z) - size, 0, ySizeOfWallTexture);
+        }
 
         parentProcessing.endShape();
     }
@@ -202,5 +150,50 @@ public class Maze3D extends Maze2D {
         parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfTexture);
 
         parentProcessing.endShape();
+    }
+
+    public void drawOutsideBox(float x, float y, float z) {
+        float size = cellSize / 2;
+
+        float xSizeOfWallTexture = 1024;
+        float ySizeOfWallTexture = 1024;
+
+        parentProcessing.beginShape(parentProcessing.QUADS);
+        parentProcessing.texture(pimageStoneWall);
+
+        // -Y "top" face
+        parentProcessing.vertex((x)-size, (-y)-size, (z)-size, 0, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)-size, xSizeOfWallTexture, 0);
+        parentProcessing.vertex((x)+size, (-y)-size, (z)+size, xSizeOfWallTexture, ySizeOfWallTexture);
+        parentProcessing.vertex((x)-size, (-y)-size, (z)+size, 0, ySizeOfWallTexture);
+
+        parentProcessing.endShape();
+    }
+
+    private void drawOutsideBoxes(Coordinate start, Coordinate end) {
+        for (int y = start.getY(); y < end.getY(); y++) {
+            for (int x = start.getX(); x < end.getX(); x++) {
+                if ((x < 0 || x > sizeWidth) || (y < 0 || y > sizeHeight)) {
+                    drawOutsideBox(x * cellSize,0 , y * cellSize);
+                }
+            }
+        }
+    }
+
+    public void drawOutside(Coordinate playerCords) {
+        int viewDistanceX = 12;
+        int viewDistanceY = 6;
+
+        if (playerCords.getX() - viewDistanceX < 0 ||
+            playerCords.getX() + viewDistanceX + 1 > sizeWidth ||
+            playerCords.getY() - viewDistanceY < 0 ||
+            playerCords.getY() + viewDistanceY + 1 > sizeHeight) {
+
+            Coordinate startCorner = new Coordinate(playerCords.getX() - viewDistanceX, playerCords.getY() - viewDistanceY);
+            Coordinate endCorner = new Coordinate(playerCords.getX() + viewDistanceX + 1, playerCords.getY() + viewDistanceY + 1);
+
+            parentProcessing.noStroke();
+            drawOutsideBoxes(startCorner, endCorner);
+        }
     }
 }
