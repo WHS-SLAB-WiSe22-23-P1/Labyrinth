@@ -40,7 +40,7 @@ public class Main extends PApplet {
         //    level = new StreamLevelProvider(System.in);
         //}
 
-        level = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(3, 3));
+        level = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(40, 40));
 
         Main newMain = new de.whs.slab.wise2223.project.labyrinth.ui.firstperson.Main(level);
 
@@ -116,15 +116,15 @@ public class Main extends PApplet {
                 break;
         }
 
-        maze.drawMaze(mode3D);
         player.movePlayer(currentlyPressed, mode3D);
+        maze.drawMaze(mode3D, player.getCords());
         player.drawCharacter(mode3D);
 
         checkForWin();
     }
 
     protected void restartLevel() {
-        this.levelProvider = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(3, 3));
+        this.levelProvider = new RandomisedDepthFirstSearchLevelProvider(new Dimensions(40, 40));
 
         //Give the maze the reference to this, so it can draw
         maze = new Maze3D(this);

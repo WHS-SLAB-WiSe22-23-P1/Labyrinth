@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+\usepackage{csquotes}
+\usepackage{hyphenat}
+\usepackage{textcmds}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{authblk}
+\usepackage{svg}
+
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\usepackage{graphicx}
+\usepackage{chngpage}
+\usepackage{calc}
+
+\renewcommand{\lstlistingname}{Code}
+\renewcommand{\lstlistlistingname}{Codeverzeichnis}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,
+    urlcolor=blue,
+    pdftitle={SLAB individuelle Ausarbeitung},
+    pdfauthor={Nik Benson},
+    pdfpagemode=FullScreen,
+}
+\urlstyle{same}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+
+\usepgfplotslibrary{units}
+
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{nettrekblue}{rgb}{0.10,0.61,0.84}
+
+\lstdefinestyle{java}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{orange},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+}
+
+\lstset{style=java}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\title{Semesterarbeit --- Individuelle Ausarbeitung}
+\author[1]{Nik Benson}
+\affil[1]{\href{mailto:nik.benson@studmail.w-hs.de}{nik.benson@studmail.w-hs.de}}
+
+
+\usepackage[backend=biber,style=iso-authoryear]{biblatex}
+\bibliography{main}
+
+\begin{document}
+    \pagenumbering{gobble}
+    \include{title}
+
+    \pagenumbering{Roman}
+    \setcounter{page}{2}
+    \tableofcontents
+    \addcontentsline{toc}{section}{Abbildungsverzeichnis}
+    \listoffigures
+    \addcontentsline{toc}{section}{Tabellenverzeichnis}
+    \listoftables
+    \addcontentsline{toc}{section}{Codeverzeichnis}
+    \lstlistoflistings
+    \newpage
+    \pagenumbering{arabic}
+
+    \section{Einleitung}\label{sec:einleitung}
+        Im folgenden sind meine Erfahrungen aus SLAB und daraus abgeleitete Pläne für die Zukunft dargestellt.
+        Da ich schon länger mit Linux Betriebssystemen arbeite und auch schon seit einigen Jahren kommerziell Software schreibe, war das meiste zum CLI sowie das Projekt nicht groß etwas neues für mich.
+        Auch wenn einige CLI Tricks so noch mal gefestigt wurden.
+        Wirklich neu war für mich nur das in Abschnitt~\ref{sec:awk} weiter beschriebene Tool AWK~.
+
+
+    \section{AWK}\label{sec:awk}
+        Bereits bevor wir AWK behandelt haben bin ich in einem Gespräch mit Prof.\ Guddat während einer der Arbeitszeiten auf dieses Tool gestoßen.
+        Für das Modul DBI musste ich \qq{.log} Dateien in eine CSV Datei parsen, da ich meine Ausgabe für Benchmarks ungünstig aufgebaut habe.
+        Da ich zuvor noch nie mit AWK gearbeitet hatte, habe ich das Skript nicht selbst geschrieben.
+        Ich nutzte ChatGPT~\autocite{openai-2023}, um mir das Skript generieren zu lassen.
+        Das Skript ist dargestellt in Code~\ref{lst:awk}.
+        Wenn wir die Vorlesung zu diesem Thema hatten werde ich mich hiermit weiter auseinandersetzen.
+        \lstinputlisting[language=awk, label={lst:awk}, caption={AWK--Skript, um meine DBI logs in eine CSV zu parsen}]{../assets/code/extract.awk}
+
+
+    \section{Statistik}\label{sec:statistik}
+        \begin{table}[ht!]
+            \centering
+            \begin{tabular}{c|c}
+                Woche & Commits\\
+                \hline\\
+                \csvreader[head to column names]{../assets/data/commits.csv}{}{\week & \commits\\}
+            \end{tabular}
+
+            \caption{Commits in Main}
+            \label{tab:commits}
+        \end{table}
+        \begin{figure}[ht!]
+            \centering
+            \begin{tikzpicture}
+                \begin{axis}[
+                    ylabel={Commits},
+                    xlabel={Projektwoche},
+                    xtick=data,
+                    grid=major,
+                    ybar,
+                    nodes near coords,
+                    nodes near coords align={vertical},
+                    every node near coord/.append style={font=\tiny},
+                ]
+                    \addplot[
+                        fill=nettrekblue,
+                        draw=black,
+                        text=black,
+                    ] table [
+                        x={week},
+                        y={commits},
+                        col sep=comma,
+                    ]
+                        {../assets/data/commits.csv};
+                \end{axis}
+            \end{tikzpicture}
+
+            \caption{Commits in Main}
+            \label{fig:commits}
+        \end{figure}
+        In diesem Abschnitt sind in Tabelle~\ref{tab:commits} und Abbildung~\ref{fig:commits} die Commits in Main dargestellt.
+        Diese Werte sind relativ gering, dies ergibt sich allerdings daraus, dass wir Feature--Branching mit Squash verwenden.
+        Die Abnahme der Commits in den letzten Wochen lässt sich damit erklären, dass wir die arbeit an ein paar Features zugute der Dokumentation eingestellt haben, aber auch einige Verbesserungen sind noch in Feature Branches zu finden.
+        Diese sind aufgrund der Art des Projekts ehr groß und nicht, wie eigentlich gewünscht, atomar.
+
+
+    \section{Für die Zukunft}\label{sec:fur-die-zukunft}
+        Ich werde wohl in Zukunft nicht mit Processing arbeiten, da das nicht meinem gewünschten Fachgebiet entspricht.
+        Es war auch nicht grundlos, dass ich mich hauptsächlich mit unserem \qq{Backend}, also der Generierung, befasst habe.
+
+
+        Was ich allerdings mitnehmen konnte, war aus einem weiteren Gespräch mit Prof.\ Guddat über Meta--Programming.
+        Auch wenn ich ihre Empfehlung des \qq{Dragon Book{[}s{]}} noch nicht weiter nachgehen konnte, werde ich es im folgenden Semester für meine Bachelorarbeit weiter verfolgen.
+        Dies ist meinem recht strikten Zeitplan verschuldet, der sich daraus ergibt, dass ich, anstatt der üblichen 2 Module (dual), 9 Module bis zum nächsten Semester plane.
+        Das Thema Meta--Programming mit MPS hat bereits zu Beginn des Semesters meine Aufmerksamkeit erregt, da es noch eine sehr neue Technologie ist.
+        Es hat noch viele, zu ergründende, Anwendungsfälle, und es gibt noch viel Potenzial, etwas wirklich Neues zu schaffen.
+        Entsprechend ist das ausgezeichnetes Material für eine Bachelorarbeit und hoffentlich auch Objekt weiterer Forschung und Innovation meinerseits.
+        In jedem Fall, wenn ich mit dem Master weiter mache, andernfalls muss ich die Markttauglichkeit mehr in den Vordergrund stellen.
+
+
+        So wie es aktuell aussieht, werde ich wohl bereits in einem halben Jahr eine Lead--Software--Engineer Stelle in meinem aktuellen Ausbildungsbetrieb antreten.
+        Das nimmt diesbezüglich die Möglichkeiten des Masters, allerdings bin ich dann auch in der Position, um das ein oder andere, passende, Projekt in diese Richtung zu lenken.
+
+
+    \newpage
+    \pagenumbering{roman}
+    \printbibliography
+\end{document}
