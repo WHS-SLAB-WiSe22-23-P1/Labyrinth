@@ -1,5 +1,59 @@
-Im folgenden sind einige Algorithmen aufgeführt, mit denen rechteckige Labyrinthe generiert werden können.
-Zum schluss ist in Abschnitt~\ref{subsec:unsere-implementierung} unsere, auf den Vor\- und Nachteilen der aufgeführten Algorithmen basierte Entscheidung, der \qq{Randomised-Depth-First-Search} Algorithmus, weiter ausgeführt.
+Im folgenden Abschnitt~\ref{subsec:der-originale-plan} wird zunächst der originale Plan erläutert und in Einzelschritten dargestellt, warum dieser so nicht implementiert wurde.
+Daraufhin folgt in Abschnitt~\ref{subsec:randomized-depth-first-search} eine generelle Beschreibung des allgemeinen \qq{Randomised-Depth-First-Search} Algorithmus.
+Zum schluss ist in Abschnitt~\ref{subsec:unsere-implementierung} erklärt wie wir diesen Algorithmus zur Labyrinth-Generation implementiert haben.
+\subsection{Der originale Plan}\label{subsec:der-originale-plan}
+Vor der Detailbeschreibung zunächst einmal die grobe Idee.
+Von einem bestimmten Punkt aus geht das Programm einen Schritt in eine zufällige Richtung, bis es das Ziel in der Mitte erreicht hat.
+Danach soll noch einmal durch den nun erstellten Zielpfad gelaufen werden, und an zufälligen Stellen Abzweigungen vom Hauptpfad generiert werden.
+Im Detail würde dies erreicht werden, indem wir eine zwei dimensionale Liste mit Weg-Objekten erstellen, einen Start aufrufen, und dieser sich zufällig eine Richtung als Attribut einstellt und Koordinaten für das nächste Objekt zurückgibt.
+Sobald alle Wege fertig sind, sollte noch einmal über alle iteriert werden, und je nachdem, ob sie eine Richtung haben, entweder eine 0 (Wand) oder eine 1 (Weg) in einen zwei dimensionalen Bit-Array eingetragen werden.
+
+Zwar kommen einige dieser Punkte schon nah an unsere finale Implementierung, jedoch kann man auf den ersten Blick schon einige Probleme finden. Wenn zuerst über zufällige Richtungen NUR der Zielpfad generiert wird, und später erst die Sackgassen, kann es schnell passieren, dass der Zielpfad sich \qq{einschneckt}, also sich selbst in eine Ecke läuft, aus der er nicht mehr entkommen kann, da er nicht zweimal über dasselbe Feld laufen darf. (Siehe Abbildung~\ref{fig:einschnecken})
+    \begin{figure}[ht!]
+    \centering
+                \begin{tikzpicture}[node distance={30mm}, main/.style = {draw, circle,outer sep=0pt}]
+                \tikzstyle{rand} = [node distance={30mm}, rand/.style = {draw, circle,outer sep=0pt}]
+                \tikzstyle{klrand} = [node distance={15mm}, klrand/.style = {draw, circle,outer sep=0pt}]
+                \tikzstyle{klw} = [node distance={13mm}, klw/.style = {draw, circle,outer sep=0pt}]
+                    \node[rand] (a) { };
+                    \node[rand] (b) [below of=a] { };
+                    \node[rand] (c) [right of=b] { };
+                    \node[rand] (d) [above of=c] { };
+                    \node[klrand] (e) [left of=d] { };
+                    \node[klrand] (f) [below of=e] { };
+                    \node[klw] (g) [right of=f] { };
+                    \node[node distance={13mm}] (h) [above of=g] { };
+                    \node[node distance={10mm}] (i) [left of=h] { };
+                    \node[node distance={10mm}] (j) [below of=i] { };
+                    \node[node distance={9mm}] (k) [right of=j] { };
+
+                    \draw (a) to (b);
+                    \draw (b) to (c);
+                    \draw (c) to (d);
+                    \draw (d) to (e);
+                    \draw (e) to (a);
+                    \draw (e) to (f);
+                    \draw (f) to (g);
+                    \draw (g) to (h);
+                    \draw (h) to (i);
+                    \draw (i) to (j);
+                    \draw (j) to (k);
+
+                \end{tikzpicture}
+
+        \caption{Einschneckung}
+        \label{fig:einschnecken}
+    \end{figure}
+
+Also müsste man unter großen aufwand einen Vorrechner erstellen, der solche Einschneckungen verhindert.
+Zudem kann es hier auch passieren, dass das Ziel selbst umzingelt wird. Auch der Fakt, dass im Nachhinein ein zusätzlicher Durchlauf für die Sackgassen erfolgen sollte, ist extrem suboptimal.
+
+Aus diesen Gründen wurde die Idee verworfen und es wurde beim Überlegen systematischer vorgegangen. Anstatt das Rad neu zu erfinden, haben wir uns damit beschäftigt, an welchen schon existierenden Algorithmen man sich orientieren kann. 
+Da einige innerhalb des Teams sich schon vorher mit Algorithmen beschäftigt hatten, kam recht schnell der Entschluss dazu \qq{Randomised-Depth-First-Search} als unseren Orientierung-Punkt zu verwenden. 
+Und was \qq{Randomised-Depth-First-Search} genau ist, und wie es implementiert wurde, wird in den nun folgenden Abschnitten behandelt
+
+
+
 \subsection{Randomized-Depth-First-Search}\label{subsec:randomized-depth-first-search}
     \begin{figure}[ht!]
         \centering
