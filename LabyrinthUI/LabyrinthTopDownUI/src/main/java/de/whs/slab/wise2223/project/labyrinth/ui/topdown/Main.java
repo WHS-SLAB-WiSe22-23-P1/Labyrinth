@@ -53,12 +53,13 @@ public class Main extends LevelUI {
     public void settings() {
         //size(600, 480);
         fullScreen();
-        currentlyPressed = new ArrayList<Integer>();
+        currentlyPressed = new ArrayList<>();
 
         maze.fillMaze(level);
         player.setPosition(maze.getStart());
     }
 
+    @Override
     public void draw() {
         maze.drawMaze();
         player.movePlayer(currentlyPressed);

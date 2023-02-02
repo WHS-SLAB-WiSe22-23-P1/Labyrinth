@@ -1,0 +1,130 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[ngerman=ngerman-x-latest]{hyphsubst}
+\usepackage{csquotes}
+\usepackage{hyphenat}
+\usepackage{textcmds}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+
+\usepackage{authblk}
+\renewcommand*{\Authsep}{, }
+\renewcommand*{\Authand}{ und }
+\renewcommand*{\Authands}{ und }
+
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\usepackage{graphicx}
+\usepackage{chngpage}
+\usepackage{calc}
+
+\renewcommand{\lstlistingname}{Code}
+\renewcommand{\lstlistlistingname}{Codeverzeichnis}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,
+    urlcolor=blue,
+    pdftitle={SLAB --- Labyrinth},
+    pdfauthor={Nik Benson},
+    pdfpagemode=FullScreen,
+}
+\urlstyle{same}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{units}
+
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+
+
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{java}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=java}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage[backend=biber,style=iso-authoryear]{biblatex}
+\bibliography{README}
+
+\title{Semesterprojekt}
+\author[1]{Nik Benson}
+\affil[1]{\href{mailto:nik.benson@studmail.w-hs.de}{nik.benson@studmail.w-hs.de}}
+\author[2]{David Borgert}
+\affil[2]{\href{mailto:david.borgert@studmail.w-hs.de}{david.borgert@studmail.w-hs.de}}
+\author[3]{Julian Frieling}
+\affil[3]{\href{mailto:julian.frieling@studmail.w-hs.de}{julian.frieling@studmail.w-hs.de}}
+\author[4]{Wilfried Ornowski}
+\affil[4]{\href{mailto:wilfried.ornowkski@studmail.w-hs.de}{wilfried.ornowski@studmail.w-hs.de}}
+\author[5]{Ulrich Steffen}
+\affil[5]{\href{mailto:ulrich.steffen@studmail.w-hs.de}{ulrich.steffen@studmail.w-hs.de}}
+\begin{document}
+    \pagenumbering{gobble}
+    \include{title}
+
+    \pagenumbering{Roman}
+    \setcounter{tocdepth}{3}
+    \tableofcontents
+    \addcontentsline{toc}{section}{Abbildungsverzeichnis}
+    \listoffigures
+    \addcontentsline{toc}{section}{Codeverzeichnis}
+    \lstlistoflistings
+    \newpage
+    \pagenumbering{arabic}
+
+
+    \section{Ziele}\label{sec:ziele}
+        \input{ziele}
+
+
+    \section{Tooling}\label{sec:tooling}
+        \input{tooling}
+
+
+    \section{Generieren eines rechteckigen Labyrinths}\label{sec:generieren-eines-rechteckigen-labyrinths}
+        \input{generieren-eines-rechteckigen-labyrinths}
+
+    \section{Erstellen eines Spiels in Processing}\label{sec:erstellen-eines-spiels-in-processing}
+        \input{frontend}
+
+    \newpage
+    \pagenumbering{roman}
+    \printbibliography
+\end{document}
