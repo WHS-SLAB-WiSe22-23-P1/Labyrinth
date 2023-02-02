@@ -8,7 +8,7 @@ Nachdem wir genug Grundwissen über Processing hatten, haben wir mit der Entwick
 
 Java ist eine objektorientierte Sprache. Deshalb wurde der Aufbau der Dateien auch objektorientiert geplant. Insgesamt wurden drei zusätzliche Klassen, zur Hauptklasse, erstellt. Eine Klasse kümmert sich um die Logik und Darstellung des Labyrinths. Eine Klasse kümmert sich um die Steuerung und Darstellung des Spielcharakters und die letzte Klasse, hilft bei der Berechnung, ob eine Kollision zwischen dem Charakter und dem Labyrinth auftritt. Gesteuert wird dies alles von der Hauptklasse, welche auch die Instanz von Processing besitzt.
 
-Da es am Anfang noch keine funktionierende Schnittstelle zu unserem Backend und den damit verbundenen Generator für Labyrinthe gab, haben wir ein Labyrinth mit komplett zufälliger Verteilung generiert.
+Da es am Anfang noch keine funktionierende Schnittstelle zu unserem Backend und den damit verbundenen Generator für Labyrinthe gab, haben wir ein Labyrinth mit komplett zufälliger Verteilung generiert. Zu sehen ist dies in Abbildung~\ref{fig:Fr2DTopDownRandom}.
 Mit diesem simplen Aufbau konnten wir schon mit der Umsetzung der einzelnen Klassen beginnen. Erst wurde das Labyrinth dargestellt, dann wurde der Spielcharakter hinzugefügt. Nachdem eine einfache Steuerung in alle Richtungen funktioniert hatte, haben wir uns um die Kollision gekümmert, damit man nicht einfach durch die Wände laufen kann.
 
 \begin{figure}[hbtp!]
@@ -18,7 +18,7 @@ Mit diesem simplen Aufbau konnten wir schon mit der Umsetzung der einzelnen Klas
     \label{fig:Fr2DTopDownRandom}
 \end{figure}
 Als Nächstes wurde die erste Schnittstelle für generierte Labyrinthe hinzugefügt, ein einfaches Auslesen einer JSON Datei, welche das Labyrinth in einem Grid gespeichert hat.
-Da die meisten Mechaniken schon zuvor umgesetzt wurden, war das Spiel damit in dem ersten komplett spielbaren Stand.
+Da die meisten Mechaniken schon zuvor umgesetzt wurden, war das Spiel, wie man in Abbildung~\ref{fig:Fr2DTopDown} sehen kann, in dem ersten komplett spielbaren Stand.
 
 \begin{figure}[hbtp!]
     \centering
@@ -30,7 +30,7 @@ Da die meisten Mechaniken schon zuvor umgesetzt wurden, war das Spiel damit in d
 \subsection{Umsetzung in 3D}\label{subsec:umsetzung-in-3D}
 Nachdem das Spiel in 2D funktionierte, sind wir auf 3D umgestiegen. Da, wie zuvor schon erwähnt, Java eine objektorientierte Sprache ist, haben wir möglichst viel Code der 2D Klassen vererbt und im Nachhinein angepasst.
 Das Umsetzen in 3D war für uns besonders interessant, da wir bislang noch nichts in 3D gemacht haben. Deshalb haben wir wieder zunächst die Dokumentationen und Tutorials von Processing durchlaufen, um zu verstehen, wie genau Processing 3D umsetzt. Es stellte sich heraus, dass das Erstellen von Körper in 3D vergleichsweise einfach war, nachdem wir vieles von der 2D Umsetzung übernehmen konnten. Jedoch muss man für die Kamera sehr viel selbst berechnen, da einem nur wenig abgenommen wird. Generell war die Kamerasteuerung einer der größten Hürden in der Umsetzung der 3D-Ansichten.
-Es wurden 2 Ansichten umgesetzt, wobei wir erst uns auf eine Top-Down Ansicht fokussiert haben. Dies lag unter anderem daran, dass die Steuerung des Spielcharakters der 2D Ansicht ähnelte. Bei einer Top-Down Ansicht, sieht man ähnlich, wie bei einer 2D Ansicht von oben auf das Spielfeld. Teilweise wird dies auch gerne als Vogelperspektive bezeichnet, da die Kamera und damit der Spieler wie ein Vogel von oben schaut.
+Es wurden 2 Ansichten umgesetzt, wobei wir erst uns auf eine Top-Down Ansicht fokussiert haben. Dies lag unter anderem daran, dass die Steuerung des Spielcharakters der 2D Ansicht ähnelte. Bei einer Top-Down Ansicht, wie man in Abbildung~\ref{fig:Fr3DTopDown} erkennen kann, sieht man ähnlich, wie bei einer 2D Ansicht von oben auf das Spielfeld. Teilweise wird dies auch gerne als Vogelperspektive bezeichnet, da die Kamera und damit der Spieler wie ein Vogel von oben schaut.
 
 \begin{figure}[hbtp!]
     \centering
@@ -39,7 +39,7 @@ Es wurden 2 Ansichten umgesetzt, wobei wir erst uns auf eine Top-Down Ansicht fo
     \label{fig:Fr3DTopDown}
 \end{figure}
 
-Wie man auf Bild~\ref{fig:Fr3DTopDown} erkennen kann, war die Spielwelt sehr einfarbig. Deshalb erkundigten wir uns, wie man Texturen in 3D einfügt. Dabei lernten wir, dass die Standardfunktion für einen einfachen Würfel keine Möglichkeiten für Texturen gaben. Als Lösung haben wir stattdessen eigenen Würfel mithilfe von kombinierten 2D Flächen erstellt. Diese einzelnen Flächen kann man einfach mit einer Textur versehen, die als ganzes die Wände unseres Labyrinthes darstellten. Zusätzlich fügten wir einfache Lichtquellen ein, um dem Spiel etwas mehr Abwechslung zu bieten.
+Wie man auf der Abbildung~\ref{fig:Fr3DTopDown} erkennen kann, war die Spielwelt sehr einfarbig. Deshalb erkundigten wir uns, wie man Texturen in 3D einfügt. Dabei lernten wir, dass die Standardfunktion für einen einfachen Würfel keine Möglichkeiten für Texturen gaben. Als Lösung haben wir stattdessen eigenen Würfel mithilfe von kombinierten 2D Flächen erstellt. Diese einzelnen Flächen kann man einfach mit einer Textur versehen, die als ganzes die Wände unseres Labyrinthes darstellten. Zusätzlich fügten wir einfache Lichtquellen ein, um dem Spiel etwas mehr Abwechslung zu bieten. Das Ergebnis dazu sieht man in Abbildung~\ref{fig:Fr3DTopDownTexture} und~\ref{fig:Fr3DFirstPersonTexture}.
 
 \begin{figure}[hbtp!]
     \centering
@@ -51,7 +51,7 @@ Wie man auf Bild~\ref{fig:Fr3DTopDown} erkennen kann, war die Spielwelt sehr ein
 Als die Top-Down 3D Ansicht unseren Wünschen entsprach, kümmerten wir uns um eine First-Person 3D Ansicht. Mit einer First-Person Ansicht meint man eine Ansicht, welche einem die Perspektive des Spielers selbst zeigt. Im Falle unseres Labyrinthes bedeutet dies also, dass man selbst im Labyrinth steckt und nicht einfach über die Wände schauen kann.
 Da die Steuerung bislang rein über die 4 Himmelsrichtungen und den damit verbundenen Tasten gelang, mussten wir eine neue Steuerung für die First-Person Ansicht programmieren. Hierbei dreht man mithilfe der Maus den Spieler und die Kamera. Wenn man dann die Pfeiltasten zum Bewegen drückt, bewegt sich der Spieler relativ zur Kamera und nicht zu den Himmelsrichtungen. Dies alles war mit vielen Berechnungen verbunden, jedoch war das Ergebnis sehr zufriedenstellend.
 
-\begin{figure}[hbtp!]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=\paperwidth-3in]{../assets/img/Fr3DFirstPersonTexture.PNG}
     \caption{Darstellung des Labyrinthes in 3D mit Texture und Licht}

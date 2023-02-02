@@ -1,81 +1,77 @@
 
 \subsection{Vorwort}\label{subsec:Vorwort}
 
-Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oct15/labyrinths.html}} fasziniert das Labyrinth, der Irrgarten bzw. Maze den Menschen. Dieser Faszination wir sind auch nachgegangen und untersuchten das Erstellen von Labyrinthen sowie die visuelle Darstellung. Auch haben wir Algorithmen zum Lösen von Labyrinthen untersucht. Unzählige Prototypen, meist mit p5js\footnote{\url{https://p5js.org}}(einer Portierung von Processing\footnote{\url{https://processing.org}}  mit Java nach Javascript)  wurden erstellt bzw.  vorhandene Quellen untersucht.
+	Seit 5000 Jahren\footnote{\url{https://www.math.stonybrook.edu/~tony/whatsnew/oct15/labyrinths.html}} fasziniert das Labyrinth, der Irrgarten bzw. Maze den Menschen. Dieser Faszination wir sind auch nachgegangen und untersuchten das Erstellen von Labyrinthen sowie die visuelle Darstellung. Auch haben wir Algorithmen zum Lösen von Labyrinthen untersucht. Unzählige Prototypen, meist mit p5js\footnote{\url{https://p5js.org}}(einer Portierung von Processing\footnote{\url{https://processing.org}} mit Java nach Javascript) wurden erstellt bzw. vorhandene Quellen untersucht.
 
-	Wir standen vor der Entscheidung Processing nativ zu verwenden, mit eingeschränkter Entwicklungsumgebung Processing Development Environment (PDE)\footnote{\url{https://processing.org/environment}},  oder zu versuchen Processing in Java\footnote{\url{https://happycoding.io/tutorials/java/processing-in-java}}, wie ein Framework, in einer gängigen Entwicklungsumgebung zu nutzen. Und haben uns für die Nutzung von Processing als Framework mit der beliebten Java IDE IntelliJ von JetBrains entschieden. So gestaltet sich die Entwicklung leichter und wir konnten Maven als buildtool und git zur Versionsverwaltung leicht einsetzen. Wir starteten mit einer alten Processing Version 3.5.4 weil sie als einzige im Maven Repository zu finden war. 
+	Wir standen vor der Entscheidung Processing nativ zu verwenden, mit eingeschränkter Entwicklungsumgebung Processing Development Environment (PDE)\footnote{\url{https://processing.org/environment}}, oder zu versuchen Processing in Java\footnote{\url{https://happycoding.io/tutorials/java/processing-in-java}}, wie ein Framework, in einer gängigen Entwicklungsumgebung zu nutzen. Und haben uns für die Nutzung von Processing als Framework mit der beliebten Java IDE IntelliJ von JetBrains entschieden. So gestaltet sich die Entwicklung leichter und wir konnten Maven als buildtool und git zur Versionsverwaltung leicht einsetzen. Wir starteten mit einer alten Processing Version 3.5.4, weil sie als einzige im Maven Repository zu finden war.
 
 	Dieses unterstütze 3D open GL nicht korrekt auf mac os mit Apple silicon. Später konnten wir auf eine aktuelle Processing Version 4.1.1 wechseln. Auch diese war nicht perfekt gepackt im Maven Repository. Das haben wir in dann zu Fuß selber gemacht. Wir stießen auf fehlerhafte Einstellungen in IntelliJ für Maven Projekte in der mac os Version. Und konnten auch dieses lösen.
-
 \subsection{MVP}\label{subsec:mvp}
-	Unser MVP(Minimum-Viable-Product) für das Projekt ''Labyrinth''  wurde nach ausführlichen Diskussionen während der ersten Sitzungen in Zusammenarbeit aller Anwesenden festgelegt. Es wurde entschieden das wir für ein minimales, sowie präsentierbares Produkt mindestens folgende Milestones erfüllen wollen.
-	
+	Unser MVP(Minimum-Viable-Product) für das Projekt ''Labyrinth'' wurde nach ausführlichen Diskussionen während der ersten Sitzungen in Zusammenarbeit aller Anwesenden festgelegt. Es wurde entschieden das wir für ein minimales, sowie präsentierbares Produkt mindestens folgende Milestones erfüllen wollen.
+
 	- Ein (rechteckiges)2d Labyrinth generieren
-	
-	- Ein 2d Labyrinth aus der Topdown Ansicht darstellen 
 		
+	- Ein 2d Labyrinth aus der Topdown Ansicht darstellen
+
 	- Ein Lösungsalgorithmus
 	
 	- Eine Möglichkeit den Lösungsweg im Labyrinth anzeigen lassen
-		
-	Während der Arbeit am Projekt hat sich allerdings herausgestellt das der Fokus des Backend Teams vielmehr auf dem Generierungs- als auf dem Lösungsalgorithmus lag. Durch diese Verschiebung des Fokus, haben wir den Lösungsalgorithmus daher auch nicht im finalem Produkt integriert und unsere Milestones zur Wegfindung nicht erreicht.
 	
+	Während der Arbeit am Projekt hat, sich allerdings herausgestellt, dass der Fokus des Backend-Teams vielmehr auf dem Generierungs- als auf dem Lösungsalgorithmus lag. Durch diese Verschiebung des Fokus haben wir den Lösungsalgorithmus daher auch nicht im finalen Produkt integriert und unsere Milestones zur Wegfindung nicht erreicht.
+
 	Wie genau sich die Erarbeitung zum implementierten Algorithmus gestaltet hat und eine genauere Beschreibung dessen findet sich im Abschnitt 3. / ''Generieren eines rechteckigen Labyrinths'' wieder.
 
     \subsubsection*{Labyrinth wird generiert mit Java}
-		Nachdem wir die Minimum-Ziele definiert und ausformuliert haben mussten wir uns auch zwangsweise mit der Frage beschäftigen welche Tools wir zur Arbeit am Projekt benutzen wollen.
-		
-		Detaillierte Infos zu den verwendeten Tools befinden sich im Abschnitt 2. / ''Tooling''.
-		
-		Warum dieser Zusatz zu dem bereits definierten Milestone der Labyrinthgenerierung jedoch wichtig war ergibt sich aus unserer Entscheidung den Algorithmus Processing unabhängig zu bauen. Daraus folgte das wir eine Datenstruktur(Output) in Java generieren welche wir dann an Processing übergeben. Die Daten können dann innerhalb der Processing-Umgebung vom Frontend Team weiterverwendet werden und somit auch graphisch dargestellt werden.
-		  
-		Daraus ergab sich folgende, verbesserte Formulierung unseres zuvor gesetzten Milestones:    
-		
+		Nachdem wir die Minimum-Ziele definiert und ausformuliert haben, mussten wir uns auch zwangsweise mit der Frage beschäftigen, welche Tools wir zur Arbeit am Projekt benutzen wollen.
+
+		Detaillierte Informationen zu den verwendeten Tools befinden sich im Abschnitt 2. / ''Tooling''.
+
+		Warum dieser Zusatz zu dem bereits definierten Milestone der Labyrinthgenerierung jedoch wichtig war, ergibt sich aus unserer Entscheidung den Algorithmus Processing unabhängig zu bauen. Daraus folgte, dass wir eine Datenstruktur(Output) in Java generieren, welche wir dann an Processing übergeben. Die Daten können dann innerhalb der Processing-Umgebung vom Frontend Team weiterverwendet werden und somit auch grafisch dargestellt werden.
+
+		Daraus ergab sich folgende, verbesserte Formulierung unseres zuvor gesetzten Milestones:
+
 		Ein (rechteckiges)2d Labyrinth in Processing darstellen -> welches zuvor in Java und unabhängig von Processing generiert wurde.
 
 \subsection{Wunschziele}\label{subsec:Wunschziele}
-    Bereits zu beginn gab es neben den festgelegten minimalen Milestones für das MVP einen regen Austausch über mögliche Features(), welche wir gerne implementieren würden, realistisch gesehen den Rahmen der Projektarbeit aber überschreiten.
-    
-    Nichtsdestotrotz haben sich aus diesen Überlegungen einige interessante Wunschziele ergebe welche wir nach der Fertigstellung des MVP erarbeiten könnten.
-    
-    Eine Auflistung welche Features zur Diskussion standen und welche wir tatsächlich im Projekt noch integriert haben findet sich im folgendem Text.
+	Bereits zu Beginn gab es neben den festgelegten minimalen Milestones für das MVP einen regen Austausch über mögliche Features(), welche wir gerne implementieren würden, realistisch gesehen den Rahmen der Projektarbeit aber überschreiten.
+
+	Nichtsdestotrotz haben sich aus diesen Überlegungen einige interessante Wunschziele ergebe, welche wir nach der Fertigstellung des MVP erarbeiten könnten.
+
+	Eine Auflistung welche Features zur Diskussion standen und welche wir tatsächlich im Projekt noch integriert haben findet, sich im folgenden Text.
 
 
-    \subsubsection*{Bewegen durch das Labyrinth}
-        Das Bewegen durch das Labyrinth war eines der wichtigsten Features in Bezug darauf unser Projekt als tatsächliches ''Spiel'' zu bezeichnen. Das Feature impliziert neben dem reinen bewegen durch, auch die Möglichkeit zum beenden des Labyrinthes und hat unser MVP von der reinen Darstellung um grundlegende Interaktionen mit dem Labyrinth erweitert.
-        
-    \subsubsection*{Labyrinth wird in Topdown Ansicht dargestellt mit Processing}
-    	Implementiert in dem Wunschziel der Topdown Ansicht befindet sich die Implementierung einer 3d Darstellung des Labyrinths. Diese Implementierung wurde vom Frontend Team basierend auf dem Code zur 2d Darstellung erarbeitet. Basierend auf der Möglichkeit das Labyrinth nun 3d Darstellen zu können, diente dieser Schritt als Grundlage um eine Sinnvolle Topdown Ansicht zu implementieren.
-    	
-    	Dementsprechend stellt dieses Wunschziel einen wichtigen Schritt in unsere Projektarbeit da, da dieser den Wechsel von 2- in 3d beinhaltet.
-        
-    \subsubsection*{First Person}
-        Basierend auf den zwei zuvor Vorgestellten Features ist die First Person Ansicht das letzte Wunschziel, welchen wir nach dem MVP noch implementiert haben. 
-        
-        Die First Person Ansicht basiert auf dem Feature der 3d Implementierung und würde ohne diese keine sinnvolle Implementierung zulassen. Das Feature der First Person Ansicht war dementsprechend ein wichtiges Feature im Bereich der 3d Darstellung und setzt eine klare Unterscheidung zwischen 3- und 2d Ansicht welche im Gegensatz zu Topdown Ansicht im 3d einen deutlich signifikanteren und insbesondere erkennbaren Unterschied macht.    
+	\subsubsection*{Bewegen durch das Labyrinth}
+		Das Bewegen durch das Labyrinth war eines der wichtigsten Features in Bezug darauf unser Projekt als tatsächliches ''Spiel'' zu bezeichnen. Das Feature impliziert neben dem reinen bewegen durch, auch die Möglichkeit zum beenden des Labyrinthes und hat unser MVP von der reinen Darstellung um grundlegende Interaktionen mit dem Labyrinth erweitert.
 
-    \subsubsection*{Varianten bei der Generierung}
-        Varianten bei der Generierung sollten der Grundstein für einen möglichen Level-Editor werden. Intern hätten verschiedene Generierungsalgorithmen für mehr Variation bei den Labyrinthen gesorgt während sie extern eine Basis für Endnutzer bei der Nutzung des Level-Editors hätten bieten können. Zudem muss man hier zwischen Algorithmus-Varianten und Labyrinth-Varianten unterscheiden. 
-        
-        Da das Backend Team allerdings durch die Implementierung eines eigenen Algorithmus (und der einzelnen, rechteckigen Labyrinth-Variante) für das MVP bereits viel Zeit benötigt hat, ist dieses Feature noch offen. 
+	\subsubsection*{Labyrinth wird in Topdown Ansicht dargestellt mit Processing}
+		Implementiert in dem Wunschziel der Topdown Ansicht befindet sich die Implementierung einer 3d Darstellung des Labyrinths. Diese Implementierung wurde vom Frontend Team basierend auf dem Code zur 2d Darstellung erarbeitet. Basierend auf der Möglichkeit das Labyrinth nun 3d Darstellen zu können, diente dieser Schritt als Grundlage um eine Sinnvolle Topdown Ansicht zu implementieren.
 
+		Dementsprechend stellt dieses Wunschziel einen wichtigen Schritt in unsere Projektarbeit dar, da dieser den Wechsel von 2- in 3d beinhaltet.
 
-    \subsubsection*{Level Editor}
-        Der Level-Editor war eines unserer ''advanced'' Features und war die nächste Stufe der Generierungsvarianten. Dementsprechend sollte der Editor das erste große Feature sein mit welchem auch Endnutzer des Projekts eigene Level generieren und darstellen können. 
-        
-        Grundlage hierfür war das obige Feature bezüglich der Varianten (siehe ''Varianten der Generierung'' für Details) und ebenso wie das vorherige Feature ist auch der Editor noch offen. 
+	\subsubsection*{First Person}
+		Basierend auf den zwei zuvor vorgestellten Features ist die First-Person Ansicht das letzte Wunschziel, welchen wir nach dem MVP noch implementiert haben.
 
+		Die First-Person Ansicht basiert auf dem Feature der 3d Implementierung und würde ohne diese keine sinnvolle Implementierung zulassen. Das Feature der First Person Ansicht war dementsprechend ein wichtiges Feature im Bereich der 3d Darstellung und setzt eine klare Unterscheidung zwischen 3- und 2d Ansicht, welche im Gegensatz zu Topdown Ansicht im 3d einen deutlich signifikanteren und insbesondere erkennbaren Unterschied macht.
 
-    \subsubsection*{P5JS}
-		P5JS ist das Gegenstück zu Processig(Java), jedoch mit Javascript. So kann man ein Programm in P5JS im Web-Browser ausführen. So könnte unser Program auf einem Server laufen  und wäre Weltweit erreichbar. 
-		
+	\subsubsection*{Varianten bei der Generierung}
+		Varianten bei der Generierung sollten der Grundstein für einen möglichen Level-Editor werden. Intern hätten verschiedene Generierungsalgorithmen für mehr Variation bei den Labyrinthen gesorgt, während sie extern eine Basis für Endnutzer bei der Nutzung des Level-Editors hätten bieten können. Zudem muss man hier zwischen Algorithmus-Varianten und Labyrinth-Varianten unterscheiden.
+
+		Da das Backend Team allerdings durch die Implementierung eines eigenen Algorithmus (und der einzelnen, rechteckigen Labyrinth-Variante) für das MVP bereits viel Zeit benötigt hat, ist dieses Feature noch offen.
+
+	\subsubsection*{Level Editor}
+		Der Level-Editor war eines unserer ''advanced'' Features und war die nächste Stufe der Generierungsvarianten. Dementsprechend sollte der Editor das erste große Feature sein, mit welchem auch Endnutzer des Projekts eigene Level generieren und darstellen können.
+
+		Grundlage hierfür war das obige Feature bezüglich der Varianten (siehe ''Varianten der Generierung'' für Details) und ebenso wie das vorherige Feature ist auch der Editor noch offen.
+
+	\subsubsection*{P5JS}
+		P5JS ist das Gegenstück zu Processig(Java), jedoch mit Javascript. So kann man ein Programm in P5JS im Webbrowser ausführen. So könnte unser Programm auf einem Server laufen und wäre weltweit erreichbar.
+
 		Dieses Feature ist zum Zeitpunkt der Projektabgabe noch offen.
-		 
 
-    \subsubsection*{Ball}
-    	Eine Version unseres Programms für ein Android-Tablet / iPad. Bei dieser wäre es möglich einen Ball durch neigen des Tablets in eine Richtung zu rollen.
-    	
-    	Dieses Feature ist zum Zeitpunkt der Projektabgabe noch offen.
+	\subsubsection*{Ball}
+		Eine Version unseres Programms für ein Android-Tablet / iPad. Bei dieser wäre es möglich, einen Ball durch Neigen des Tablets in eine Richtung zu rollen.
+
+		Dieses Feature ist zum Zeitpunkt der Projektabgabe noch offen.
 
 		
  
